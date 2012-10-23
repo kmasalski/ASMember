@@ -1,0 +1,30 @@
+autonomoussystem:
+    pattern:  /
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:index" }
+
+autonomoussystem_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:show" }
+
+autonomoussystem_new:
+    pattern:  /new
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:new" }
+
+autonomoussystem_create:
+    pattern:  /create
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:create" }
+    requirements: { _method: post }
+
+autonomoussystem_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:edit" }
+
+autonomoussystem_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:update" }
+    requirements: { _method: post }
+
+autonomoussystem_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:delete" }
+    requirements: { _method: post }

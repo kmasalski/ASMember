@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Ip" table="ip">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="ip" type="string" column="ip" length="255" nullable="false"/>
+    <field name="asid" type="integer" column="asid" nullable="false"/>
+    <field name="hostname" type="string" column="hostname" length="500" nullable="false"/>
+    <field name="iswebserver" type="integer" column="isWebServer" nullable="false"/>
+    <field name="lastcheck" type="date" column="lastCheck" nullable="false"/>
+  </entity>
+</doctrine-mapping>

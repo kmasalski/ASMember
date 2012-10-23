@@ -1,0 +1,49 @@
+<?php
+
+namespace Mcc\ASMemberBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Mcc\ASMemberBundle\Entity\History
+ *
+ * @ORM\Table(name="history")
+ * @ORM\Entity
+ */
+class History
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+	
+    /**
+     * @var Ip
+     *
+     * @ORM\ManyToOne(targetEntity="Ip")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
+     */
+    private $ipid;
+
+    /**
+     * @var \DateTime $whenchecked
+     *
+     * @ORM\Column(name="whenChecked", type="date", nullable=false)
+     */
+    private $whenchecked;
+
+    /**
+     * @var integer $iswebserver
+     *
+     * @ORM\Column(name="isWebServer", type="integer", nullable=false)
+     */
+    private $iswebserver;
+
+
+}

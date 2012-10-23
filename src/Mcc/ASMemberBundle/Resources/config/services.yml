@@ -1,0 +1,7 @@
+parameters:
+#    mcc_as_member.example.class: Mcc\Bundle\ASMemberBundle\Example
+
+services:
+#    mcc_as_member.example:
+#        class: %mcc_as_member.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

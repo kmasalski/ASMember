@@ -1,0 +1,15 @@
+mcc_as_member_homepage:
+    pattern:  /
+    defaults: { _controller: MccASMemberBundle:AutonomousSystem:index }
+
+mcc_autonomoussystem:
+    resource: "routing/autonomoussystem.yml"
+    prefix:   /autonomoussystem
+
+mcc_ip:
+    resource: "routing/ip.yml"
+    prefix:   /ip
+
+mcc_history:
+    resource: "routing/history.yml"
+    prefix:   /history

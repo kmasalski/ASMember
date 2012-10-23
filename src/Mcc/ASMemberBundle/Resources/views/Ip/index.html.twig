@@ -1,0 +1,43 @@
+<h1>Ip list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ip</th>
+            <th>Hostname</th>
+            <th>Iswebserver</th>
+            <th>Lastcheck</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('ip_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.ip }}</td>
+            <td>{{ entity.hostname }}</td>
+            <td>{{ entity.iswebserver }}</td>
+            <td>{% if entity.lastcheck %}{{ entity.lastcheck|date('Y-m-d H:i:s') }}{% endif %}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('ip_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('ip_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('ip_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>

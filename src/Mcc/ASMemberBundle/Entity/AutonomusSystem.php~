@@ -1,0 +1,39 @@
+<?php
+
+namespace Mcc\ASMemberBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Mcc\ASMemberBundle\Entity\AutonomusSystem
+ *
+ * @ORM\Table(name="autonomussystem")
+ * @ORM\Entity
+ */
+class AutonomusSystem
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string $as
+     *
+     * @ORM\Column(name="ASIdentifier", type="string", length=15, nullable=false)
+     */
+    private $as;
+
+    /**
+     * @var string $asname
+     *
+     * @ORM\Column(name="ASName", type="string", length=255, nullable=false)
+     */
+    private $asname;
+
+
+}

@@ -1,0 +1,10 @@
+history:
+    pattern:  /
+    defaults: { _controller: "MccASMemberBundle:History:index" }
+
+history_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "MccASMemberBundle:History:show" }
+
+
+

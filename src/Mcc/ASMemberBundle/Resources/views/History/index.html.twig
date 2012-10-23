@@ -1,0 +1,29 @@
+<h1>History list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Whenchecked</th>
+            <th>Iswebserver</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('history_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{% if entity.whenchecked %}{{ entity.whenchecked|date('Y-m-d H:i:s') }}{% endif %}</td>
+            <td>{{ entity.iswebserver }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('history_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

@@ -1,0 +1,63 @@
+<?php
+
+namespace Mcc\ASMemberBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Mcc\ASMemberBundle\Entity\Ip
+ *
+ * @ORM\Table(name="ip")
+ * @ORM\Entity
+ */
+class Ip
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string $ip
+     *
+     * @ORM\Column(name="ip", type="string", length=255, nullable=false)
+     */
+    private $ip;
+	
+    /**
+     * @var As
+     *
+	 * @ORM\ManyToOne(targetEntity="As")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
+     */
+    private $as;
+
+    /**
+     * @var string $hostname
+     *
+     * @ORM\Column(name="hostname", type="string", length=500, nullable=false)
+     */
+    private $hostname;
+
+    /**
+     * @var integer $iswebserver
+     *
+     * @ORM\Column(name="isWebServer", type="integer", nullable=false)
+     */
+    private $iswebserver;
+
+    /**
+     * @var \DateTime $lastcheck
+     *
+     * @ORM\Column(name="lastCheck", type="date", nullable=false)
+     */
+    private $lastcheck;
+
+
+}

@@ -1,0 +1,30 @@
+ip:
+    pattern:  /
+    defaults: { _controller: "MccASMemberBundle:Ip:index" }
+
+ip_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "MccASMemberBundle:Ip:show" }
+
+ip_new:
+    pattern:  /new
+    defaults: { _controller: "MccASMemberBundle:Ip:new" }
+
+ip_create:
+    pattern:  /create
+    defaults: { _controller: "MccASMemberBundle:Ip:create" }
+    requirements: { _method: post }
+
+ip_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "MccASMemberBundle:Ip:edit" }
+
+ip_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "MccASMemberBundle:Ip:update" }
+    requirements: { _method: post }
+
+ip_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "MccASMemberBundle:Ip:delete" }
+    requirements: { _method: post }

@@ -1,0 +1,45 @@
+<h1>Ip</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Ip</th>
+            <td>{{ entity.ip }}</td>
+        </tr>
+        <tr>
+            <th>Hostname</th>
+            <td>{{ entity.hostname }}</td>
+        </tr>
+        <tr>
+            <th>Iswebserver</th>
+            <td>{{ entity.iswebserver }}</td>
+        </tr>
+        <tr>
+            <th>Lastcheck</th>
+            <td>{{ entity.lastcheck|date('Y-m-d H:i:s') }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('ip') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('ip_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('ip_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
