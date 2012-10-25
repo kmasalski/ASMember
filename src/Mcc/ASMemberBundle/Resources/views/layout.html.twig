@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <header>
+        <h1>ASMember</h1>
+    </header>
+    <nav class="menu user">
+    <ul>
+
+    </ul>
+    </nav>
+    
+    <section>
+        {% if app.session.hasFlash('notice') %}
+            <div class="flash-notice">
+                <p>{{ app.session.flash('notice') }}</p>
+            </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    <footer>
+        <p>Konrad Masalski 168003, Pawel Christow 174990</p>
+    </footer>
+{% endblock %}
