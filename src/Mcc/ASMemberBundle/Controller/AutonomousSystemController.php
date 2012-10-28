@@ -183,7 +183,7 @@ class AutonomousSystemController extends Controller
     
    /**
      * Parses cidr report to get ranges
-     * returns array of ip ranges
+     * saves ip ranges to database
      */
     public function parseAction($asId)
     {
@@ -203,7 +203,7 @@ class AutonomousSystemController extends Controller
         $em->persist($as);
         $em->flush();
         
-        $crawler->filter('a.black')->each(function ($node, $i) {
+        $crawler->filter('a.black')->each(function ($node, $i) use (&$em){
             return $node->nodeValue;
             $ipRange  = new IpRange();
             $ipRange->setAutonumousSystem($as);
@@ -212,6 +212,20 @@ class AutonomousSystemController extends Controller
             $em->persist($ipRange);
             $em->flush();
         });
-        return new Response('Everything wnt ok');
+        return new Response('Everything went ok');
+    }
+    
+    /**
+     * Calls parse function for every AS id
+     */
+    public function parseAllAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
+        foreach($ases as $as)
+        {
+            $this->parseAction($as->getId());
+        }
+        return new Response('Everything went ok');
     }
 }
