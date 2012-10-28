@@ -3,6 +3,10 @@
 namespace Mcc\ASMemberBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\CssSelector\CssSelector;
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
@@ -175,5 +179,39 @@ class AutonomousSystemController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+    
+   /**
+     * Parses cidr report to get ranges
+     * returns array of ip ranges
+     */
+    public function parseAction($asname)
+    {
+        $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as='.$asname.'&view=2.0';
+        
+        $crawler = new Crawler(file_get_contents($pageAddress));
+        //return new Response(file_get_contents($pageAddress));
+        $crawler = $crawler->filter('a.black')->each(function ($node, $i) {
+            return $node->nodeValue;
+        });
+        
+        return new Response(var_dump($crawler));
+        
+        //$entity  = new AutonomousSystem();
+//        $form = $this->createForm(new AutonomousSystemType(), $entity);
+//        $form->bind($request);
+//
+//        if ($form->isValid()) {
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($entity);
+//            $em->flush();
+//
+//            return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));
+//        }
+
+//        return $this->render('MccASMemberBundle:AutonomousSystem:new.html.twig', array(
+//            'entity' => $entity,
+//            'form'   => $form->createView(),
+//        ));
     }
 }
