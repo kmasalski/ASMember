@@ -31,9 +31,9 @@ class Ip
     /**
      * @var AutonomousSystem
      *
-	 * @ORM\ManyToOne(targetEntity="AutonomousSystem")
+     * @ORM\ManyToOne(targetEntity="AutonomousSystem")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="asidentifier", referencedColumnName="id")
      * })
      */
     private $asidentifier;

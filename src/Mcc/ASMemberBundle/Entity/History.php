@@ -26,7 +26,7 @@ class History
      *
      * @ORM\ManyToOne(targetEntity="Ip")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="ipid", referencedColumnName="id")
      * })
      */
     private $ipid;
