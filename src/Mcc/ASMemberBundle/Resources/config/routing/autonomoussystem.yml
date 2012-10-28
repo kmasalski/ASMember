@@ -29,6 +29,10 @@ autonomoussystem_delete:
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:delete" }
     requirements: { _method: post }
 
-autonomoussystem_show:
-    pattern:  /{asname}
+autonomoussystem_parse:
+    pattern:  /{asId}
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:parse" }
+    
+autonomoussystem_parseAll:
+    pattern:  /parseAll
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:parseAll" }    
