@@ -177,6 +177,7 @@ class AutonomousSystemController extends Controller {
      */
     public function parseAction($asId) {
         $em = $this->getDoctrine()->getManager();
+        ini_set('max_execution_time', 30000000000);
         $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
 
         $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=' . $as->getAsIdentifier() . '&view=2.0';
@@ -209,6 +210,7 @@ class AutonomousSystemController extends Controller {
      */
     public function parseAllAction() {
         $em = $this->getDoctrine()->getManager();
+        ini_set('max_execution_time', 30000000000);
         $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
         foreach ($ases as $as) {
             $this->parseAction($as->getId());
