@@ -215,16 +215,16 @@ class AutonomousSystemController extends Controller
     public function parseAsNameAction()
     {
 
-        $pageAddress= 'http://www.cidr-report.org/as2.0/autnums.html';
-         ini_set('max_execution_time', 3000); 
+        $pageAddress= 'http://www.cidr-report.org/as2.0/bgp-originas.html';
+         ini_set('max_execution_time', 30000000000); 
         $crawler = new Crawler(file_get_contents($pageAddress));
         $em = $this->getDoctrine()->getEntityManager();
         //return new Response(file_get_contents($pageAddress));
-        $crawler = $crawler->filter('a')->each(function ($node, $i) {
+        $crawler = $crawler->filter('a')->each(function ($node, $i)use (&$em) {
                        
             $ASys  = new AutonomousSystem();
             $ASys->setAs($node->nodeValue);
-            $em = $this->getDoctrine()->getEntityManager();
+            //$em = $this->getDoctrine()->getEntityManager();
             $em->persist($ASys);     
             $em->flush();
         });
