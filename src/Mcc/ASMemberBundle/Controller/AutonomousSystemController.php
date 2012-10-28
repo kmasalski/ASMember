@@ -185,33 +185,29 @@ class AutonomousSystemController extends Controller
      * Parses cidr report to get ranges
      * returns array of ip ranges
      */
-    public function parseAction($asname)
+    public function parseAction($asId)
     {
-        $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as='.$asname.'&view=2.0';
+        $em = $this->getDoctrine()->getManager();
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
+        
+        $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as='.$as->getAsIdentifier().'&view=2.0';
         
         $crawler = new Crawler(file_get_contents($pageAddress));
-        //return new Response(file_get_contents($pageAddress));
-        $crawler = $crawler->filter('a.black')->each(function ($node, $i) {
+        
+        $asName = $crawler->filterXpath('/html/body/ul')->text();
+        $as->setAsname($asName);
+        $em->persist($as);
+        $em->flush();
+        
+        $crawler->filter('a.black')->each(function ($node, $i) {
             return $node->nodeValue;
+            $ipRange  = new IpRange();
+            $ipRange->setAutonumousSystem($as);
+            $ipRange->setDateCheck(getDate());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($ipRange);
+            $em->flush();
         });
-        
-        return new Response(var_dump($crawler));
-        
-        //$entity  = new AutonomousSystem();
-//        $form = $this->createForm(new AutonomousSystemType(), $entity);
-//        $form->bind($request);
-//
-//        if ($form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($entity);
-//            $em->flush();
-//
-//            return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));
-//        }
 
-//        return $this->render('MccASMemberBundle:AutonomousSystem:new.html.twig', array(
-//            'entity' => $entity,
-//            'form'   => $form->createView(),
-//        ));
     }
 }

@@ -30,5 +30,5 @@ autonomoussystem_delete:
     requirements: { _method: post }
 
 autonomoussystem_show:
-    pattern:  /{asname}
+    pattern:  /{asId}
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:parse" }
