@@ -192,9 +192,13 @@ class AutonomousSystemController extends Controller
         
         $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as='.$as->getAsIdentifier().'&view=2.0';
         
+        //$pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
         $crawler = new Crawler(file_get_contents($pageAddress));
         
-        $asName = $crawler->filterXpath('/html/body/ul')->text();
+        $asName = $crawler->filterXpath('//body/ul')->text();
+        
+        //return new Response(var_dump($asName));
+        
         $as->setAsname($asName);
         $em->persist($as);
         $em->flush();
@@ -208,6 +212,6 @@ class AutonomousSystemController extends Controller
             $em->persist($ipRange);
             $em->flush();
         });
-
+        return new Response('Everything wnt ok');
     }
 }
