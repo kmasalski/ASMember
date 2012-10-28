@@ -13,3 +13,7 @@ mcc_ip:
 mcc_history:
     resource: "routing/history.yml"
     prefix:   /history
+
+AllAS:
+    pattern:  /AllAS
+    defaults: { _controller: MccASMemberBundle:AutonomousSystem:parseAsName }

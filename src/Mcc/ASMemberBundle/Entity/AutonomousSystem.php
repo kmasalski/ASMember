@@ -31,7 +31,7 @@ class AutonomousSystem
     /**
      * @var string $asname
      *
-     * @ORM\Column(name="ASName", type="string", length=255, nullable=false)
+     * @ORM\Column(name="ASName", type="string", length=255, nullable=true)
      */
     private $asname;
 

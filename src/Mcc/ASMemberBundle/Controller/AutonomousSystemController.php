@@ -6,9 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\CssSelector\CssSelector;
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
 use Mcc\ASMemberBundle\Form\AutonomousSystemType;
 
@@ -195,6 +193,41 @@ class AutonomousSystemController extends Controller
             return $node->nodeValue;
         });
         
+        return new Response(var_dump($crawler));
+        
+        //$entity  = new AutonomousSystem();
+//        $form = $this->createForm(new AutonomousSystemType(), $entity);
+//        $form->bind($request);
+//
+//        if ($form->isValid()) {
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($entity);
+//            $em->flush();
+//
+//            return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));
+//        }
+
+//        return $this->render('MccASMemberBundle:AutonomousSystem:new.html.twig', array(
+//            'entity' => $entity,
+//            'form'   => $form->createView(),
+//        ));
+    }
+    public function parseAsNameAction()
+    {
+
+        $pageAddress= 'http://www.cidr-report.org/as2.0/autnums.html';
+         ini_set('max_execution_time', 3000); 
+        $crawler = new Crawler(file_get_contents($pageAddress));
+        $em = $this->getDoctrine()->getEntityManager();
+        //return new Response(file_get_contents($pageAddress));
+        $crawler = $crawler->filter('a')->each(function ($node, $i) {
+                       
+            $ASys  = new AutonomousSystem();
+            $ASys->setAs($node->nodeValue);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($ASys);     
+            $em->flush();
+        });
         return new Response(var_dump($crawler));
         
         //$entity  = new AutonomousSystem();
