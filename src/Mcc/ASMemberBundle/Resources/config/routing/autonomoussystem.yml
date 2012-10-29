@@ -35,4 +35,8 @@ autonomoussystem_delete:
     
 autonomoussystem_parseAll:
     pattern:  /parseAll
-    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:parseAll" }    
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:parseAll" }
+
+autonomoussystem_testing:
+    pattern:  /testing
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:testing" }    

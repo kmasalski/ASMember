@@ -193,14 +193,13 @@ class AutonomousSystemController extends Controller {
         $as->setAsname($asName);
         $em->persist($as);
 
-        $crawler->filter('a.black','a.red','a.green')->each(function ($node, $i) use (&$em, &$as) {
+        $crawler->filter('a.black' OR 'a.red' OR 'a.green')->each(function ($node, $i) use (&$em, &$as) {
                     $ipRange = new IpRange();
                     $ipRange->setAsId($as);
                     $ipRange->setDateCheck(new \DateTime('now'));
                     $ipRange->setIpRange($node->nodeValue);
                     $em->persist($ipRange);
-                    if(!$i%10)
-                    {
+                    if (!$i % 10) {
                         $em->flush();
                     }
                 });
@@ -215,7 +214,7 @@ class AutonomousSystemController extends Controller {
         $em = $this->getDoctrine()->getManager();
         ini_set('max_execution_time', 30000000000);
         $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
-                   
+
         foreach ($ases as $as) {
             $this->parseAction($as->getId());
         }
@@ -235,13 +234,38 @@ class AutonomousSystemController extends Controller {
                     $ASys->setAs($node->nodeValue);
                     //$em = $this->getDoctrine()->getEntityManager();
                     $em->persist($ASys);
-                    if($i%100 == 0)
-                    {
+                    if ($i % 100 == 0) {
                         $em->flush();
                     }
                 });
         $em->flush();
         return new Response(var_dump($crawler));
     }
+/*
+    public function testingAction() {
+        
+       // $em = $this->getDoctrine()->getManager();
+        ini_set('max_execution_time', 30000000000);
+      //  $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
+        //echo $asId;
+        $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=AS4134&view=2.0';
 
+       // $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
+        $crawler = new Crawler(file_get_contents($pageAddress));
+
+        //$asName = $crawler->filterXpath('//body/ul')->text();
+
+        //return new Response(var_dump($asName));
+
+        //$as->setAsname($asName);
+       // $em->persist($as);
+
+       // $kino=$crawler->filterXpath(('//body/ul')->extract(array('_text', 'class'));
+        $attributes = $crawler->filterXpath('//body/ul')->extract(array('a', 'black'));
+
+       return new Response(var_dump($attributes));
+
+        
+    }
+*/
 }
