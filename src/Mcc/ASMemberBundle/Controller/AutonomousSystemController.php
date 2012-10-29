@@ -180,6 +180,7 @@ class AutonomousSystemController extends Controller {
         $em = $this->getDoctrine()->getManager();
         ini_set('max_execution_time', 30000000000);
         $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
+        $ipRange = $em->getRepository('MccASMemberBundle:IpRange');
         echo $asId;
         $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=' . $as->getAsIdentifier() . '&view=2.0';
 
@@ -193,14 +194,42 @@ class AutonomousSystemController extends Controller {
         $as->setAsname($asName);
         $em->persist($as);
 
-        $crawler->filter('a.black' OR 'a.red' OR 'a.green')->each(function ($node, $i) use (&$em, &$as) {
-                    $ipRange = new IpRange();
-                    $ipRange->setAsId($as);
-                    $ipRange->setDateCheck(new \DateTime('now'));
-                    $ipRange->setIpRange($node->nodeValue);
-                    $em->persist($ipRange);
-                    if (!$i % 10) {
-                        $em->flush();
+        $crawler->filter('a.black')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
+                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                        $ipRange = new IpRange();
+                        $ipRange->setAsId($as);
+                        $ipRange->setDateCheck(new \DateTime('now'));
+                        $ipRange->setIpRange($node->nodeValue);
+                        $em->persist($ipRange);
+                        if (!$i % 10) {
+                            $em->flush();
+                        }
+                    }
+                });
+
+
+        $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
+                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                        $ipRange = new IpRange();
+                        $ipRange->setAsId($as);
+                        $ipRange->setDateCheck(new \DateTime('now'));
+                        $ipRange->setIpRange($node->nodeValue);
+                        $em->persist($ipRange);
+                        if (!$i % 10) {
+                            $em->flush();
+                        }
+                    }
+                });
+        $crawler->filter('a.green')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
+                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                        $ipRange = new IpRange();
+                        $ipRange->setAsId($as);
+                        $ipRange->setDateCheck(new \DateTime('now'));
+                        $ipRange->setIpRange($node->nodeValue);
+                        $em->persist($ipRange);
+                        if (!$i % 10) {
+                            $em->flush();
+                        }
                     }
                 });
         $em->flush();
