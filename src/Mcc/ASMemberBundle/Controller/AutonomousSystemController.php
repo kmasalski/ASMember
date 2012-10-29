@@ -193,13 +193,11 @@ class AutonomousSystemController extends Controller {
         $em->persist($as);
 
         $crawler->filter('a.black')->each(function ($node, $i) use (&$em) {
-                    return $node->nodeValue;
                     $ipRange = new IpRange();
                     $ipRange->setAutonumousSystem($as);
                     $ipRange->setDateCheck(getDate());
-                    $em = $this->getDoctrine()->getManager();
                     $em->persist($ipRange);
-                    if(!$i%1000)
+                    if(!$i%10)
                     {
                         $em->flush();
                     }
@@ -234,7 +232,7 @@ class AutonomousSystemController extends Controller {
                     $ASys->setAs($node->nodeValue);
                     //$em = $this->getDoctrine()->getEntityManager();
                     $em->persist($ASys);
-                    if(!$i%1000)
+                    if($i%100 == 0)
                     {
                         $em->flush();
                     }
