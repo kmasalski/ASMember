@@ -8,6 +8,7 @@ use Symfony\Component\CssSelector\CssSelector;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
+use Mcc\ASMemberBundle\Entity\IpRange;
 use Mcc\ASMemberBundle\Form\AutonomousSystemType;
 
 /**
@@ -179,7 +180,7 @@ class AutonomousSystemController extends Controller {
         $em = $this->getDoctrine()->getManager();
         ini_set('max_execution_time', 30000000000);
         $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
-
+        echo $asId;
         $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=' . $as->getAsIdentifier() . '&view=2.0';
 
         //$pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
@@ -192,10 +193,11 @@ class AutonomousSystemController extends Controller {
         $as->setAsname($asName);
         $em->persist($as);
 
-        $crawler->filter('a.black')->each(function ($node, $i) use (&$em) {
+        $crawler->filter('a.black','a.red','a.green')->each(function ($node, $i) use (&$em, &$as) {
                     $ipRange = new IpRange();
-                    $ipRange->setAutonumousSystem($as);
-                    $ipRange->setDateCheck(getDate());
+                    $ipRange->setAsId($as);
+                    $ipRange->setDateCheck(new \DateTime('now'));
+                    $ipRange->setIpRange($node->nodeValue);
                     $em->persist($ipRange);
                     if(!$i%10)
                     {
@@ -213,6 +215,7 @@ class AutonomousSystemController extends Controller {
         $em = $this->getDoctrine()->getManager();
         ini_set('max_execution_time', 30000000000);
         $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
+                   
         foreach ($ases as $as) {
             $this->parseAction($as->getId());
         }
