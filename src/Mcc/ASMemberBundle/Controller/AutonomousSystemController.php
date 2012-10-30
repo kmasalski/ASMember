@@ -193,44 +193,44 @@ class AutonomousSystemController extends Controller {
 
         $as->setAsname($asName);
         $em->persist($as);
-
+//(array('my_field' => 'value'))
         $crawler->filter('a.black')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                  //  if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue))))/*IpRange($node->nodeValue)))*/ {
                         $ipRange = new IpRange();
                         $ipRange->setAsId($as);
                         $ipRange->setDateCheck(new \DateTime('now'));
                         $ipRange->setIpRange($node->nodeValue);
                         $em->persist($ipRange);
-                        if (!$i % 10) {
+                        if (!$i % 300) {
                             $em->flush();
                         }
-                    }
+                   // }
                 });
 
 
         $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                   // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
                         $ipRange = new IpRange();
                         $ipRange->setAsId($as);
                         $ipRange->setDateCheck(new \DateTime('now'));
                         $ipRange->setIpRange($node->nodeValue);
                         $em->persist($ipRange);
-                        if (!$i % 10) {
+                        if (!$i % 300) {
                             $em->flush();
                         }
-                    }
+                   // }
                 });
         $crawler->filter('a.green')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                    if (!is_null($ipRange->findByIpRange($node->nodeValue))) {
+                   // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
                         $ipRange = new IpRange();
                         $ipRange->setAsId($as);
                         $ipRange->setDateCheck(new \DateTime('now'));
                         $ipRange->setIpRange($node->nodeValue);
                         $em->persist($ipRange);
-                        if (!$i % 10) {
+                        if (!$i % 300) {
                             $em->flush();
                         }
-                    }
+                  //  }
                 });
         $em->flush();
         return new Response('Everything went ok');
