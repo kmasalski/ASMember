@@ -201,13 +201,13 @@ class AutonomousSystemController extends Controller {
                         $ipRange->setDateCheck(new \DateTime('now'));
                         $ipRange->setIpRange($node->nodeValue);
                         $em->persist($ipRange);
-                        if (!$i % 300) {
+                        if (!$i % 1000) {
                             $em->flush();
                         }
                    // }
                 });
 
-
+/*
         $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
                    // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
                         $ipRange = new IpRange();
@@ -231,7 +231,7 @@ class AutonomousSystemController extends Controller {
                             $em->flush();
                         }
                   //  }
-                });
+                });*/
         $em->flush();
         return new Response('Everything went ok');
     }
@@ -240,14 +240,19 @@ class AutonomousSystemController extends Controller {
      * Calls parse function for every AS id
      */
     public function parseAllAction() {
-        $em = $this->getDoctrine()->getManager();
+       /* $em = $this->getDoctrine()->getManager();
         ini_set('max_execution_time', 30000000000);
         $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
 
         foreach ($ases as $as) {
-            $this->parseAction($as->getId());
+            $zmienna=$as->getID();
+            if($zmienna>19664){
+                //echo $zmienna;
+           $this->parseAction($as->getId());
+            }
         }
-        return new Response('Everything went ok');
+        return new Response('Everything went ok');*/
+        return new Response('Ta funkcja jest zakodowana w Controlle-rze aby nie doszło do aktualizacji bazy danych przez prypadek.');
     }
 
     public function parseAsNameAction() {

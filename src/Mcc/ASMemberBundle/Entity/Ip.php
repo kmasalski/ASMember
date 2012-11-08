@@ -41,21 +41,21 @@ class Ip
     /**
      * @var string $hostname
      *
-     * @ORM\Column(name="hostname", type="string", length=500, nullable=false)
+     * @ORM\Column(name="hostname", type="string", length=500, nullable=true)
      */
     private $hostname;
 
     /**
      * @var integer $iswebserver
      *
-     * @ORM\Column(name="isWebServer", type="integer", nullable=false)
+     * @ORM\Column(name="isWebServer", type="integer", nullable=true)
      */
     private $iswebserver;
 
     /**
      * @var \DateTime $lastcheck
      *
-     * @ORM\Column(name="lastCheck", type="date", nullable=false)
+     * @ORM\Column(name="lastCheck", type="date", nullable=true)
      */
     private $lastcheck;
 
@@ -169,7 +169,7 @@ class Ip
      * @param Mcc\ASMemberBundle\Entity\As $as
      * @return Ip
      */
-    public function setAutonomousSytem(\Mcc\ASMemberBundle\Entity\AutonomousSytem $asidentifier = null)
+    public function setAutonomousSytem(\Mcc\ASMemberBundle\Entity\AutonomousSystem $asidentifier = null)
     {
         $this->asidentifier = $asidentifier;
     

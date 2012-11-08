@@ -17,3 +17,7 @@ mcc_history:
 AllAS:
     pattern:  /AllAS
     defaults: { _controller: MccASMemberBundle:AutonomousSystem:parseAsName }
+
+AllIp:
+    pattern:  /AllIp
+    defaults: { _controller: MccASMemberBundle:Ip:allIp }
