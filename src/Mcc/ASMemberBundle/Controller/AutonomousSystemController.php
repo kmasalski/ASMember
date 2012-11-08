@@ -25,9 +25,14 @@ class AutonomousSystemController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
-
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+        $entities,
+        $this->get('request')->query->get('page', 1)/*page number*/,
+        50/*limit per page*/
+    );
         return $this->render('MccASMemberBundle:AutonomousSystem:index.html.twig', array(
-                    'entities' => $entities,
+                    'entities' => $pagination,
                 ));
     }
 

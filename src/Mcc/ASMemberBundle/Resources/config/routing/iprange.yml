@@ -1,0 +1,30 @@
+iprange:
+    pattern:  /
+    defaults: { _controller: "MccASMemberBundle:IpRange:index" }
+
+iprange_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "MccASMemberBundle:IpRange:show" }
+
+iprange_new:
+    pattern:  /new
+    defaults: { _controller: "MccASMemberBundle:IpRange:new" }
+
+iprange_create:
+    pattern:  /create
+    defaults: { _controller: "MccASMemberBundle:IpRange:create" }
+    requirements: { _method: post }
+
+iprange_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "MccASMemberBundle:IpRange:edit" }
+
+iprange_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "MccASMemberBundle:IpRange:update" }
+    requirements: { _method: post }
+
+iprange_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "MccASMemberBundle:IpRange:delete" }
+    requirements: { _method: post }

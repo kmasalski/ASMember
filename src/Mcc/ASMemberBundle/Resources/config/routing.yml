@@ -21,3 +21,7 @@ AllAS:
 AllIp:
     pattern:  /AllIp
     defaults: { _controller: MccASMemberBundle:Ip:allIp }
+
+MccASMemberBundle_iprange:
+    resource: "@MccASMemberBundle/Resources/config/routing/iprange.yml"
+    prefix:   /iprange    

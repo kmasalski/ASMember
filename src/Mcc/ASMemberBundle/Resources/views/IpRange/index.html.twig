@@ -1,0 +1,39 @@
+<h1>IpRange list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Iprange</th>
+            <th>Datecheck</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('iprange_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.IpRange }}</td>
+            <td>{% if entity.dateCheck %}{{ entity.dateCheck|date('Y-m-d H:i:s') }}{% endif %}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('iprange_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('iprange_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('iprange_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>
