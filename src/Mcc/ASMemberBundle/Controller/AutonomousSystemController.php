@@ -27,10 +27,8 @@ class AutonomousSystemController extends Controller {
         $entities = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-        $entities,
-        $this->get('request')->query->get('page', 1)/*page number*/,
-        50/*limit per page*/
-    );
+                $entities, $this->get('request')->query->get('page', 1)/* page number */, 50/* limit per page */
+        );
         return $this->render('MccASMemberBundle:AutonomousSystem:index.html.twig', array(
                     'entities' => $pagination,
                 ));
@@ -49,10 +47,19 @@ class AutonomousSystemController extends Controller {
             throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
         }
 
+        $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
+
         $deleteForm = $this->createDeleteForm($id);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $ranges, $this->get('request')->query->get('page', 1)/* page number */, 15/* limit per page */
+        );
 
         return $this->render('MccASMemberBundle:AutonomousSystem:show.html.twig', array(
                     'entity' => $entity,
+                   /* 'ranges' => $ranges,*/
+                    'rangeslist' => $pagination,
                     'delete_form' => $deleteForm->createView(),));
     }
 
@@ -200,43 +207,43 @@ class AutonomousSystemController extends Controller {
         $em->persist($as);
 //(array('my_field' => 'value'))
         $crawler->filter('a.black')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                  //  if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue))))/*IpRange($node->nodeValue)))*/ {
-                        $ipRange = new IpRange();
-                        $ipRange->setAsId($as);
-                        $ipRange->setDateCheck(new \DateTime('now'));
-                        $ipRange->setIpRange($node->nodeValue);
-                        $em->persist($ipRange);
-                        if (!$i % 1000) {
-                            $em->flush();
-                        }
-                   // }
+                    //  if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue))))/*IpRange($node->nodeValue)))*/ {
+                    $ipRange = new IpRange();
+                    $ipRange->setAsId($as);
+                    $ipRange->setDateCheck(new \DateTime('now'));
+                    $ipRange->setIpRange($node->nodeValue);
+                    $em->persist($ipRange);
+                    if (!$i % 1000) {
+                        $em->flush();
+                    }
+                    // }
                 });
 
-/*
-        $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                   // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
-                        $ipRange = new IpRange();
-                        $ipRange->setAsId($as);
-                        $ipRange->setDateCheck(new \DateTime('now'));
-                        $ipRange->setIpRange($node->nodeValue);
-                        $em->persist($ipRange);
-                        if (!$i % 300) {
-                            $em->flush();
-                        }
-                   // }
-                });
-        $crawler->filter('a.green')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                   // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
-                        $ipRange = new IpRange();
-                        $ipRange->setAsId($as);
-                        $ipRange->setDateCheck(new \DateTime('now'));
-                        $ipRange->setIpRange($node->nodeValue);
-                        $em->persist($ipRange);
-                        if (!$i % 300) {
-                            $em->flush();
-                        }
-                  //  }
-                });*/
+        /*
+          $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
+          // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
+          $ipRange = new IpRange();
+          $ipRange->setAsId($as);
+          $ipRange->setDateCheck(new \DateTime('now'));
+          $ipRange->setIpRange($node->nodeValue);
+          $em->persist($ipRange);
+          if (!$i % 300) {
+          $em->flush();
+          }
+          // }
+          });
+          $crawler->filter('a.green')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
+          // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
+          $ipRange = new IpRange();
+          $ipRange->setAsId($as);
+          $ipRange->setDateCheck(new \DateTime('now'));
+          $ipRange->setIpRange($node->nodeValue);
+          $em->persist($ipRange);
+          if (!$i % 300) {
+          $em->flush();
+          }
+          //  }
+          }); */
         $em->flush();
         return new Response('Everything went ok');
     }
@@ -245,18 +252,18 @@ class AutonomousSystemController extends Controller {
      * Calls parse function for every AS id
      */
     public function parseAllAction() {
-       /* $em = $this->getDoctrine()->getManager();
-        ini_set('max_execution_time', 30000000000);
-        $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
+        /* $em = $this->getDoctrine()->getManager();
+          ini_set('max_execution_time', 30000000000);
+          $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
 
-        foreach ($ases as $as) {
-            $zmienna=$as->getID();
-            if($zmienna>19664){
-                //echo $zmienna;
-           $this->parseAction($as->getId());
-            }
-        }
-        return new Response('Everything went ok');*/
+          foreach ($ases as $as) {
+          $zmienna=$as->getID();
+          if($zmienna>19664){
+          //echo $zmienna;
+          $this->parseAction($as->getId());
+          }
+          }
+          return new Response('Everything went ok'); */
         return new Response('Ta funkcja jest zakodowana w Controlle-rze aby nie doszło do aktualizacji bazy danych przez prypadek.');
     }
 
@@ -280,31 +287,32 @@ class AutonomousSystemController extends Controller {
         $em->flush();
         return new Response(var_dump($crawler));
     }
-/*
-    public function testingAction() {
-        
-       // $em = $this->getDoctrine()->getManager();
-        ini_set('max_execution_time', 30000000000);
+
+    /*
+      public function testingAction() {
+
+      // $em = $this->getDoctrine()->getManager();
+      ini_set('max_execution_time', 30000000000);
       //  $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
-        //echo $asId;
-        $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=AS4134&view=2.0';
+      //echo $asId;
+      $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=AS4134&view=2.0';
 
-       // $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
-        $crawler = new Crawler(file_get_contents($pageAddress));
+      // $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
+      $crawler = new Crawler(file_get_contents($pageAddress));
 
-        //$asName = $crawler->filterXpath('//body/ul')->text();
+      //$asName = $crawler->filterXpath('//body/ul')->text();
 
-        //return new Response(var_dump($asName));
+      //return new Response(var_dump($asName));
 
-        //$as->setAsname($asName);
-       // $em->persist($as);
+      //$as->setAsname($asName);
+      // $em->persist($as);
 
-       // $kino=$crawler->filterXpath(('//body/ul')->extract(array('_text', 'class'));
-        $attributes = $crawler->filterXpath('//body/ul')->extract(array('a', 'black'));
+      // $kino=$crawler->filterXpath(('//body/ul')->extract(array('_text', 'class'));
+      $attributes = $crawler->filterXpath('//body/ul')->extract(array('a', 'black'));
 
-       return new Response(var_dump($attributes));
+      return new Response(var_dump($attributes));
 
-        
-    }
-*/
+
+      }
+     */
 }

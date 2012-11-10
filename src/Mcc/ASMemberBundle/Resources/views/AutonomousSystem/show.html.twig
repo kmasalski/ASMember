@@ -1,3 +1,5 @@
+{% extends 'MccASMemberBundle::layout.html.twig' %}
+{% block content %}
 <h1>AutonomousSystem</h1>
 
 <table class="record_properties">
@@ -31,7 +33,15 @@
     <li>
         <form action="{{ path('autonomoussystem_delete', { 'id': entity.id }) }}" method="post">
             {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    </ul>
+{% for iprange in rangeslist%}
+    {{iprange.getIpRangee()}}<br/>
+{% endfor %}
+    
+    <div class="navigation">
+    {{ rangeslist.render()|raw }}
+      </div>
+    {% endblock %}

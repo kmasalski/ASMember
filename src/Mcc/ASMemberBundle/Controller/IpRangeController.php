@@ -176,4 +176,8 @@ class IpRangeController extends Controller
             ->getForm()
         ;
     }
+    public function allIpForThisAS(){
+        
+    }
+    
 }
