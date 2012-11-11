@@ -13,7 +13,7 @@
     {% for entity in entities %}
         <tr>
             <td><a href="{{ path('iprange_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.IpRange }}</td>
+            <td>{{ entity.IpRangee }}</td>
             <td>{% if entity.dateCheck %}{{ entity.dateCheck|date('Y-m-d H:i:s') }}{% endif %}</td>
             <td>
                 <ul>
@@ -27,6 +27,7 @@
             </td>
         </tr>
     {% endfor %}
+               
     </tbody>
 </table>
 
@@ -37,3 +38,6 @@
         </a>
     </li>
 </ul>
+ <div class="navigation">
+    {{ entities.render()|raw }}
+            </div>

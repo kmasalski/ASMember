@@ -20,11 +20,15 @@ class IpRangeController extends Controller {
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MccASMemberBundle:IpRange')->findAll();
         ini_set('max_execution_time', 30000000000);
+        $entities = $em->getRepository('MccASMemberBundle:IpRange')->findAll();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $entities, $this->get('request')->query->get('page', 1)/* page number */, 50/* limit per page */
+        );
         return $this->render('MccASMemberBundle:IpRange:index.html.twig', array(
-                    'entities' => $entities,
+                    'entities' => $pagination,
                 ));
     }
 
