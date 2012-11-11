@@ -22,7 +22,7 @@ class IpRangeController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MccASMemberBundle:IpRange')->findAll();
-
+        ini_set('max_execution_time', 30000000000);
         return $this->render('MccASMemberBundle:IpRange:index.html.twig', array(
                     'entities' => $entities,
                 ));
