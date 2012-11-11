@@ -28,3 +28,10 @@ ip_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "MccASMemberBundle:Ip:delete" }
     requirements: { _method: post }
+
+show_ip:
+    pattern:  /show/{ip}
+    defaults: { _controller: "MccASMemberBundle:Ip:showIp" }
+check_ip:
+    pattern:  /check/{rangeid}/{ip}
+    defaults: { _controller: "MccASMemberBundle:Ip:checkIp" }

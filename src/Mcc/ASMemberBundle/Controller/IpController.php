@@ -172,90 +172,88 @@ class IpController extends Controller {
 
     //zwraca lista wszystkich adresow IP
     public function allIpAction() {
-        
-                $url = "156.17.231.34";
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_NOBODY, true);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                curl_exec($ch);
-                $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
-                if ($retcode >= 200 && $retcode <= 500) {
-                    echo "work " . $retcode."<br/>";
-                 
-                } else {
-                    echo "nie dziala " . $retcode."<br/>";
-                 
-                }
 
-/*
-        ini_set('max_execution_time', 30000000000);
-        $em = $this->getDoctrine()->getEntityManager();
-        $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
-
-        foreach ($ases as $as) {
-            $id_as = $as->getId();
-            $as_ip_range = $em->getRepository('MccASMemberBundle:IpRange')->find($id_as);
-
-            $ip_addr_cidr = $as_ip_range->getIpRangee();
-            $ip_arr = explode('/', $ip_addr_cidr);
-
-            $bin = '';
-            for ($i = 1; $i <= 32; $i++) {
-                $bin .= $ip_arr[1] >= $i ? '1' : '0';
-            }
-            $ip_arr[1] = bindec($bin);
-
-            $ip = ip2long($ip_arr[0]);
-            $nm = ip2long($ip_arr[1]);
-            $nw = ($ip & $nm);
-            $bc = $nw | (~$nm);
-
-            for ($zm = 1; $zm <= ($bc - $nw - 1); $zm++) {
-                //echo long2ip($nw + $zm) . "<br/>";}
-                /* $em = $this->getDoctrine()->getEntityManager();
-                  $ip_adr = new Ip();
-                  $ip_adr->setIp(long2ip($nw + $zm));
-                  $ip_adr->setAutonomousSytem($as);
-                  $em->persist($ip_adr);
-
-
-                  //  $em->flush();
-                  if ($zm % 5000 == 0) {
-                  // echo "Number of Hosts:    " . ($bc - $nw - 1) . "<br/>";
-                  // echo $zm . " ";
-                  $em->flush();
-                  } */
-             /*   echo $zm."<br/>";
-                $url = long2ip($nw + $zm);
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_NOBODY, true);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                curl_exec($ch);
-                $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
-                if ($retcode >= 200 && $retcode <= 500) {
-                    echo "work " . $retcode . long2ip($nw + $zm)."<br/>";
-                  $ip_adr = new Ip();
-                  $ip_adr->setIp(long2ip($nw + $zm));
-                  $ip_adr->setAutonomousSytem($as);
-                  $ip_adr->setIswebserver(1);
-                  $em->persist($ip_adr);
-                  $em->flush();
-                } else {
-                    echo "nie dziala " . $retcode. long2ip($nw + $zm)."<br/>";
-                  $ip_adr = new Ip();
-                  $ip_adr->setIp(long2ip($nw + $zm));
-                  $ip_adr->setAutonomousSytem($as);
-                  $ip_adr->setIswebserver(0);
-                  $em->persist($ip_adr);
-                  $em->flush();
-                }
-            }
-            echo "koniec";
-            $em->flush();
+        $url = "156.17.231.34";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($retcode >= 200 && $retcode <= 500) {
+            echo "work " . $retcode . "<br/>";
+        } else {
+            echo "nie dziala " . $retcode . "<br/>";
         }
+
         /*
+          ini_set('max_execution_time', 30000000000);
+          $em = $this->getDoctrine()->getEntityManager();
+          $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
+
+          foreach ($ases as $as) {
+          $id_as = $as->getId();
+          $as_ip_range = $em->getRepository('MccASMemberBundle:IpRange')->find($id_as);
+
+          $ip_addr_cidr = $as_ip_range->getIpRangee();
+          $ip_arr = explode('/', $ip_addr_cidr);
+
+          $bin = '';
+          for ($i = 1; $i <= 32; $i++) {
+          $bin .= $ip_arr[1] >= $i ? '1' : '0';
+          }
+          $ip_arr[1] = bindec($bin);
+
+          $ip = ip2long($ip_arr[0]);
+          $nm = ip2long($ip_arr[1]);
+          $nw = ($ip & $nm);
+          $bc = $nw | (~$nm);
+
+          for ($zm = 1; $zm <= ($bc - $nw - 1); $zm++) {
+          //echo long2ip($nw + $zm) . "<br/>";}
+          /* $em = $this->getDoctrine()->getEntityManager();
+          $ip_adr = new Ip();
+          $ip_adr->setIp(long2ip($nw + $zm));
+          $ip_adr->setAutonomousSytem($as);
+          $em->persist($ip_adr);
+
+
+          //  $em->flush();
+          if ($zm % 5000 == 0) {
+          // echo "Number of Hosts:    " . ($bc - $nw - 1) . "<br/>";
+          // echo $zm . " ";
+          $em->flush();
+          } */
+        /*   echo $zm."<br/>";
+          $url = long2ip($nw + $zm);
+          $ch = curl_init($url);
+          curl_setopt($ch, CURLOPT_NOBODY, true);
+          curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+          curl_exec($ch);
+          $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+          curl_close($ch);
+          if ($retcode >= 200 && $retcode <= 500) {
+          echo "work " . $retcode . long2ip($nw + $zm)."<br/>";
+          $ip_adr = new Ip();
+          $ip_adr->setIp(long2ip($nw + $zm));
+          $ip_adr->setAutonomousSytem($as);
+          $ip_adr->setIswebserver(1);
+          $em->persist($ip_adr);
+          $em->flush();
+          } else {
+          echo "nie dziala " . $retcode. long2ip($nw + $zm)."<br/>";
+          $ip_adr = new Ip();
+          $ip_adr->setIp(long2ip($nw + $zm));
+          $ip_adr->setAutonomousSytem($as);
+          $ip_adr->setIswebserver(0);
+          $em->persist($ip_adr);
+          $em->flush();
+          }
+          }
+          echo "koniec";
+          $em->flush();
+          }
+          /*
           $ip_addr_cidr = "192.256.0.0/16";
           $ip_arr = explode('/', $ip_addr_cidr);
 
@@ -277,6 +275,66 @@ class IpController extends Controller {
           echo long2ip($nw + $zm) . "<br/>";
 
          */
+    }
+
+    /*
+     * showIpAction będzie pokazywało informacje o danym Ip
+     * jeżeli ono już było sprawdzane, jeżeli nie zwróci informacje
+     * że nie było sprawdzane i umożliwy sprawdzanie tego 
+     */
+
+    public function showIpAction($ip) {
+        
+    }
+
+    /*
+     * checkIpAction będzie sprawdzało czy Ip jest serwerem czy nie
+     */
+
+    public function checkIpAction($ip,$rangeid) {
+        
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($rangeid);
+        
+        $asId = $entity->getAsid();
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneById($asId);
+        $asidentifier = $as->getAsIdentifier();
+        $asName = $as->getAsname();
+        
+        $ipRange = $entity->getIpRangee();
+        
+        $url = $ip;
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($retcode >= 200 && $retcode <= 500) {
+          
+          $ip_adr = new Ip();
+          $ip_adr->setIp($ip);
+          $ip_adr->setAutonomousSytem($asId);
+          $ip_adr->setIswebserver(1);
+          $ip_adr->setLastcheck(new \DateTime('now'));
+          $em->persist($ip_adr);
+          $em->flush();
+          $answer = $ip." jest Web Serwerem.";
+          
+        } else {
+          $answer = $ip." nie jest Web Serwerem.";
+        }
+        
+        return $this->render('MccASMemberBundle:Ip:checkIp.html.twig', array(
+                    'answer' => $answer,
+                    'rangeId' => $rangeid,
+                    'range' =>  $ipRange,
+                    'asidentifier' => $asidentifier,
+                    'asname' => $asName,
+                    'ip' => $ip,
+                ));
     }
 
 }

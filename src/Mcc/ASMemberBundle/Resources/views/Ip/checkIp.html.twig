@@ -1,0 +1,27 @@
+{% extends 'MccASMemberBundle::layout.html.twig' %}
+{% block content %}
+<h1>Check IP  {{ip}}</h1>
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Range Id</th>
+            <td>{{ rangeId }}</td>
+        </tr>
+        <tr>
+            <th>Iprange</th>
+            <td>{{ range }}</td>
+        </tr>
+        <tr>
+            <th>Asidentifier</th>
+            <td>{{ asidentifier }}</td>
+        </tr>
+        <tr>
+            <th>Asname</th>
+            <td>{{ asname }}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Wynik sprawdzania</h2>
+{{answer}}
+
+    {% endblock %}

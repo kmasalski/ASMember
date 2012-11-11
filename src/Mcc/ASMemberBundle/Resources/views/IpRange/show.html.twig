@@ -1,3 +1,5 @@
+{% extends 'MccASMemberBundle::layout.html.twig' %}
+{% block content %}
 <h1>IpRange</h1>
 
 <table class="record_properties">
@@ -51,11 +53,21 @@
             </form>
         </li>
     {% for iprange in ipAddr%}
-
-        <a href="#">{{iprange}}</a>
+       <tr>
+           <td> 
+               <a href="#">{{iprange}}</a>
+           </td>
+           <td>
+               <a href="{{ path('show_ip', { 'ip': iprange, 'asid': entity.id }) }}">show</a>
+           </td>
+           <td>
+               <a href="{{ path('check_ip', { 'ip': iprange,'rangeid': entity.id }) }}">check</a>
+           </td>
         <br/>
+    </tr>
 {% endfor %}
         <div class="navigation">
     {{ ipAddr.render()|raw }}
             </div>
         </ul>
+    {% endblock %}
