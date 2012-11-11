@@ -48,7 +48,7 @@ class AutonomousSystemController extends Controller {
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-
+        
         $deleteForm = $this->createDeleteForm($id);
 
         $paginator = $this->get('knp_paginator');

@@ -38,7 +38,9 @@
         </li>
     </ul>
 {% for iprange in rangeslist%}
-    {{iprange.getIpRangee()}}<br/>
+
+<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
+    <br/>
 {% endfor %}
     
     <div class="navigation">

@@ -14,6 +14,22 @@
             <th>Datecheck</th>
             <td>{{ entity.dateCheck|date('Y-m-d H:i:s') }}</td>
         </tr>
+        <tr>
+            <th>Asidentifier</th>
+            <td>{{ asId.asidentifier }}</td>
+        </tr>
+        <tr>
+            <th>Asname</th>
+            <td>{{ asId.asname }}</td>
+        </tr>
+        <tr>
+            <th>Number of hosts for this IP: </th>
+            <td>{{numberOfHosts}}</td>
+        </tr>
+        <tr>
+            <th>IP`s range: </th>
+            <td>{{hostRange}}</td>
+        </tr>
     </tbody>
 </table>
 
@@ -31,7 +47,15 @@
     <li>
         <form action="{{ path('iprange_delete', { 'id': entity.id }) }}" method="post">
             {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    {% for iprange in ipAddr%}
+
+        <a href="#">{{iprange}}</a>
+        <br/>
+{% endfor %}
+        <div class="navigation">
+    {{ ipAddr.render()|raw }}
+            </div>
+        </ul>
