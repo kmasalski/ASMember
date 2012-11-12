@@ -18,7 +18,9 @@
         "sensio/generator-bundle": "2.1.*",
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
-        "knplabs/knp-paginator-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "mopa/bootstrap-bundle": "dev-master",
+        "twitter/bootstrap": "master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -38,5 +40,23 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    }
+    },
+       "repositories": [
+           {
+               "type": "package",
+               "package": {
+                   "version": "master", 
+                   "name": "twitter/bootstrap",
+                   "source": {
+                       "url": "https://github.com/twitter/bootstrap.git",
+                       "type": "git",
+                       "reference": "master"
+                   },
+                   "dist": {
+                       "url": "https://github.com/twitter/bootstrap/zipball/master",
+                       "type": "zip"
+                   }
+               }
+           }
+       ]
 }
