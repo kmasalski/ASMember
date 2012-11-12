@@ -48,7 +48,7 @@ class AutonomousSystemController extends Controller {
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-        
+
         $deleteForm = $this->createDeleteForm($id);
 
         $paginator = $this->get('knp_paginator');
@@ -58,7 +58,7 @@ class AutonomousSystemController extends Controller {
 
         return $this->render('MccASMemberBundle:AutonomousSystem:show.html.twig', array(
                     'entity' => $entity,
-                   /* 'ranges' => $ranges,*/
+                    /* 'ranges' => $ranges, */
                     'rangeslist' => $pagination,
                     'delete_form' => $deleteForm->createView(),));
     }
@@ -315,28 +315,28 @@ class AutonomousSystemController extends Controller {
 
       }
      */
-    
-    public function serwersAction($id){
-        
+
+    public function serwersAction($id) {
+
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MccASMemberBundle:Ip')->findByAsidentifier($id);
         $zmienna = 1;
-        
+
         if (!$entity) {
             $zmienna = 0;
             $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
             return $this->render('MccASMemberBundle:AutonomousSystem:serwers.html.twig', array(
-                 'as' => $as,
-                  'help'=>$zmienna,
-            ));
+                        'as' => $as,
+                        'help' => $zmienna,
+                    ));
         }
-        
-            
-       
-        
+
+
+
+
         $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
 
-        
+
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -344,12 +344,80 @@ class AutonomousSystemController extends Controller {
         );
 
         return $this->render('MccASMemberBundle:AutonomousSystem:serwers.html.twig', array(
-                    
                     'as' => $as,
                     'serwers' => $pagination,
-                    'help'=>$zmienna,
-                    
-            ));
-        
+                    'help' => $zmienna,
+                ));
     }
+
+    public function checkAllAction($id) {
+
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find IpRange entity.');
+        }
+        /* START ASid
+         * Pobieram AsId dla danego IP-Range że by pobrać nazwa AS oraz numer AS aby móć ich wyświetlić 
+         */
+        $asId = $entity->getAsid();
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneById($asId);
+        /* END ASid
+         */
+
+        /* START Rozpiski IP
+         * Rozpisanie wszystkie możliwe IP dla danego zakresu
+         */
+        ini_set('max_execution_time', 30000000000);
+
+        $ip_range = $entity->getIpRangee();
+        $ip_arr = explode('/', $ip_range);
+
+        $bin = '';
+        for ($i = 1; $i <= 32; $i++) {
+            $bin .= $ip_arr[1] >= $i ? '1' : '0';
+        }
+        $ip_arr[1] = bindec($bin);
+
+        $ip = ip2long($ip_arr[0]);
+        $nm = ip2long($ip_arr[1]);
+        $nw = ($ip & $nm);
+        $bc = $nw | (~$nm);
+
+        $number_of_host = ($bc - $nw - 1);
+        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+        $ip_addr = array();
+
+        for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
+            $ip_addr[$zm] = long2ip($nw + $zm);
+        }
+
+        for ($i = 1; $i < sizeof($ip_addr) + 1; $i++) {
+            
+            $url = $ip_addr[$i];
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_exec($ch);
+            $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($retcode >= 200 && $retcode <= 500) {
+
+                $ip_adr = new Ip();
+                $ip_adr->setIp($ip);
+                $ip_adr->setAutonomousSytem($asId);
+                $ip_adr->setIswebserver(1);
+                $ip_adr->setLastcheck(new \DateTime('now'));
+                $em->persist($ip_adr);
+                $em->flush();
+                
+            }
+        }
+        return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
+                    'as' => $as,
+                ));
+    }
+
 }

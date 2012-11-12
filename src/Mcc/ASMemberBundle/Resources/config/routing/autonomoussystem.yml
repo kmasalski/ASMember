@@ -44,3 +44,7 @@ autonomoussystem_testing:
 autonomoussystem_serwers:
     pattern:  /{id}/serwers
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:serwers" }
+    
+autonomoussystem_check_all:
+    pattern:  /{id}/checkAll
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:checkAll" }  
