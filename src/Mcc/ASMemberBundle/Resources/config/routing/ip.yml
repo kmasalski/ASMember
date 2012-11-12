@@ -30,7 +30,7 @@ ip_delete:
     requirements: { _method: post }
 
 show_ip:
-    pattern:  /show/{ip}
+    pattern:  /show/{rangeid}/{ip}
     defaults: { _controller: "MccASMemberBundle:Ip:showIp" }
 check_ip:
     pattern:  /check/{rangeid}/{ip}

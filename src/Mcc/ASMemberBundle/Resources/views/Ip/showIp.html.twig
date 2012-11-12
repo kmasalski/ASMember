@@ -1,0 +1,53 @@
+{# empty Twig template #}
+{% extends 'MccASMemberBundle::layout.html.twig' %}
+
+{% block content %}
+<h1>Show IP  {{ip}}</h1>
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Range Id</th>
+            <td>{{ rangeId }}</td>
+        </tr>
+        <tr>
+            <th>Iprange</th>
+            <td>{{ range }}</td>
+        </tr>
+        <tr>
+            <th>Asidentifier</th>
+            <td>{{ asidentifier }}</td>
+        </tr>
+        <tr>
+            <th>Asname</th>
+            <td>{{ asname }}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Informacje o adresie IP:</h2>
+
+{% if komunikat == 1 %}
+<tr>
+    <td>
+        Adres IP: {{ip}} nie był sprawdzany
+    </td>
+    <td>
+        <a href="{{ path('check_ip', { 'ip': ip,'rangeid': rangeId }) }}">check</a>
+    </td>
+</tr>
+{% else %}
+    <tr>
+    <td>
+        Adres IP: {{ip}} jest web serwerem, 
+    </td>
+    <td>
+        jego AS to {{ asidentifier }}, 
+    </td>
+    <td>
+       {{ip_addr.getHostname}} 
+    </td>
+</tr>
+    {% endif %}
+<br/>
+<span onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</span> 
+
+    {% endblock %}

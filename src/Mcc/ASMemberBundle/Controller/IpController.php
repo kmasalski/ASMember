@@ -283,27 +283,55 @@ class IpController extends Controller {
      * że nie było sprawdzane i umożliwy sprawdzanie tego 
      */
 
-    public function showIpAction($ip) {
+    public function showIpAction($ip, $rangeid) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($rangeid);
+
+        $asId = $entity->getAsid();
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneById($asId);
+        $asidentifier = $as->getAsIdentifier();
+        $asName = $as->getAsname();
+
+        $ipRange = $entity->getIpRangee();
         
+        $komunikat = 0;
+        
+        $ip_addr = $em->getRepository('MccASMemberBundle:Ip')->findOneByIp($ip);
+        if (!$ip_addr) {
+               $komunikat = 1;
+        }
+        
+        return $this->render('MccASMemberBundle:Ip:showIp.html.twig', array(
+                    'komunikat' => $komunikat,
+                   // 'info' =>   $ip_addr_id,
+                    'rangeId' => $rangeid,
+                    'range' => $ipRange,
+                    'ip_addr' => $ip_addr,
+                    'asidentifier' => $asidentifier,
+                    'asname' => $asName,
+                    'ip' => $ip,
+                ));
     }
 
     /*
      * checkIpAction będzie sprawdzało czy Ip jest serwerem czy nie
      */
 
-    public function checkIpAction($ip,$rangeid) {
-        
+    public function checkIpAction($ip, $rangeid) {
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($rangeid);
-        
+
         $asId = $entity->getAsid();
         $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneById($asId);
         $asidentifier = $as->getAsIdentifier();
         $asName = $as->getAsname();
-        
+
         $ipRange = $entity->getIpRangee();
-        
+
         $url = $ip;
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -311,26 +339,25 @@ class IpController extends Controller {
         curl_exec($ch);
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
+
         if ($retcode >= 200 && $retcode <= 500) {
-          
-          $ip_adr = new Ip();
-          $ip_adr->setIp($ip);
-          $ip_adr->setAutonomousSytem($asId);
-          $ip_adr->setIswebserver(1);
-          $ip_adr->setLastcheck(new \DateTime('now'));
-          $em->persist($ip_adr);
-          $em->flush();
-          $answer = $ip." jest Web Serwerem.";
-          
+
+            $ip_adr = new Ip();
+            $ip_adr->setIp($ip);
+            $ip_adr->setAutonomousSytem($asId);
+            $ip_adr->setIswebserver(1);
+            $ip_adr->setLastcheck(new \DateTime('now'));
+            $em->persist($ip_adr);
+            $em->flush();
+            $answer = $ip . " jest Web Serwerem.";
         } else {
-          $answer = $ip." nie jest Web Serwerem.";
+            $answer = $ip . " nie jest Web Serwerem.";
         }
-        
+
         return $this->render('MccASMemberBundle:Ip:checkIp.html.twig', array(
                     'answer' => $answer,
                     'rangeId' => $rangeid,
-                    'range' =>  $ipRange,
+                    'range' => $ipRange,
                     'asidentifier' => $asidentifier,
                     'asname' => $asName,
                     'ip' => $ip,
