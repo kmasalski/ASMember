@@ -1,0 +1,39 @@
+{% extends 'MccASMemberBundle::layout.html.twig' %}
+{% block content %}
+<h1>AutonomousSystem</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ as.id }}</td>
+        </tr>
+        <tr>
+            <th>Asidentifier</th>
+            <td>{{ as.asidentifier }}</td>
+        </tr>
+        <tr>
+            <th>Asname</th>
+            <td>{{ as.asname }}</td>
+        </tr>
+    </tbody>
+</table>
+<span onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</span>
+<br/>
+
+{% if help == 1 %}
+{% for ip in serwers%}
+
+{{ip.getIp}}
+    <br/>
+{% endfor %}
+    
+    <div class="navigation">
+    {{ serwers.render()|raw }}
+      </div>
+    {% endif %}
+    {%if help == 0%}
+    Niestety dla tego AS nie ma zapisane IP adresów serwerów
+    {% endif %}
+
+    {% endblock %}

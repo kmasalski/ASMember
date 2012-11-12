@@ -39,4 +39,8 @@ autonomoussystem_parseAll:
 
 autonomoussystem_testing:
     pattern:  /testing
-    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:testing" }    
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:testing" }
+    
+autonomoussystem_serwers:
+    pattern:  /{id}/serwers
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:serwers" }

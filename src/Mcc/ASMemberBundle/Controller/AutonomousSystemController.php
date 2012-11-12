@@ -315,4 +315,41 @@ class AutonomousSystemController extends Controller {
 
       }
      */
+    
+    public function serwersAction($id){
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MccASMemberBundle:Ip')->findByAsidentifier($id);
+        $zmienna = 1;
+        
+        if (!$entity) {
+            $zmienna = 0;
+            $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
+            return $this->render('MccASMemberBundle:AutonomousSystem:serwers.html.twig', array(
+                 'as' => $as,
+                  'help'=>$zmienna,
+            ));
+        }
+        
+            
+       
+        
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
+
+        
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $entity, $this->get('request')->query->get('page', 1)/* page number */, 25/* limit per page */
+        );
+
+        return $this->render('MccASMemberBundle:AutonomousSystem:serwers.html.twig', array(
+                    
+                    'as' => $as,
+                    'serwers' => $pagination,
+                    'help'=>$zmienna,
+                    
+            ));
+        
+    }
 }

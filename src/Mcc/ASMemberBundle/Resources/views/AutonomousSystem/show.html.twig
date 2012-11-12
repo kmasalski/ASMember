@@ -18,7 +18,23 @@
         </tr>
     </tbody>
 </table>
+<ul>
+    <li>
+        <a href="{{ path('autonomoussystem_serwers', { 'id': entity.id }) }}">
+            Show all Serwer for this AS</a>
+    </li>
+</ul>
 
+{% for iprange in rangeslist%}
+
+<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
+    <br/>
+{% endfor %}
+    
+    <div class="navigation">
+    {{ rangeslist.render()|raw }}
+      </div>
+    
 <ul class="record_actions">
     <li>
         <a href="{{ path('autonomoussystem') }}">
@@ -37,13 +53,4 @@
             </form>
         </li>
     </ul>
-{% for iprange in rangeslist%}
-
-<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
-    <br/>
-{% endfor %}
-    
-    <div class="navigation">
-    {{ rangeslist.render()|raw }}
-      </div>
     {% endblock %}
