@@ -83,29 +83,23 @@ $(document).ready(function()
             </tr>
         </tbody>
     </table>
-    <a href="{{ path('autonomoussystem_check_all', { 'id': entity.id}) }}">
-        Check all Ip`s
-    </a>
-    <a href="#" class="checkAll">
-        Check all Ip`s on the Page with Ajax
-    </a>
     <ul class="record_actions">
+        <li>
+            <a href="#" class="checkAll">
+                Check all Ip`s on the Page with Ajax
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('autonomoussystem_check_all', { 'id': entity.id}) }}">
+                Check all Ip`s
+            </a>
+        </li>
         <li>
             <a href="{{ path('autonomoussystem_show', { 'id': asId.id}) }}">
                 Back to the previous page
             </a>
         </li>
-        <li>
-            <a href="{{ path('iprange_edit', { 'id': entity.id }) }}">
-                Edit
-            </a>
-        </li>
-        <li>
-            <form action="{{ path('iprange_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
+        
     </ul>
     <table>
     {% for iprange in ipAddr%}
