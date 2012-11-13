@@ -3,6 +3,7 @@
 namespace Mcc\ASMemberBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Mcc\ASMemberBundle\Entity\IpRange;
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
@@ -353,15 +354,26 @@ class IpController extends Controller {
         } else {
             $answer = $ip . " nie jest Web Serwerem.";
         }
+        
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
 
-        return $this->render('MccASMemberBundle:Ip:checkIp.html.twig', array(
-                    'answer' => $answer,
-                    'rangeId' => $rangeid,
-                    'range' => $ipRange,
-                    'asidentifier' => $asidentifier,
-                    'asname' => $asName,
-                    'ip' => $ip,
-                ));
+            $returnArray = array("responseCode" => 200, "isWebServer" => $answer);
+            $return = json_encode($returnArray); //jscon encode the array
+
+            return new Response($return, 200);
+        } 
+        else {
+        
+            return $this->render('MccASMemberBundle:Ip:checkIp.html.twig', array(
+                        'answer' => $answer,
+                        'rangeId' => $rangeid,
+                        'range' => $ipRange,
+                        'asidentifier' => $asidentifier,
+                        'asname' => $asName,
+                        'ip' => $ip,
+                    ));
+        }
     }
 
 }

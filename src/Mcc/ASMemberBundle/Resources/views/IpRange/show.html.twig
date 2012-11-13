@@ -1,75 +1,104 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
-{% block content %}
-<h1>IpRange</h1>
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ entity.id }}</td>
-        </tr>
-        <tr>
-            <th>Iprange</th>
-            <td>{{ entity.getIpRangee() }}</td>
-        </tr>
-        <tr>
-            <th>Datecheck</th>
-            <td>{{ entity.dateCheck|date('Y-m-d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <th>Asidentifier</th>
-            <td>{{ asId.asidentifier }}</td>
-        </tr>
-        <tr>
-            <th>Asname</th>
-            <td>{{ asId.asname }}</td>
-        </tr>
-        <tr>
-            <th>Number of hosts for this IP: </th>
-            <td>{{numberOfHosts}}</td>
-        </tr>
-        <tr>
-            <th>IP`s range: </th>
-            <td>{{hostRange}}</td>
-        </tr>
-    </tbody>
-</table>
-<a href="{{ path('autonomoussystem_check_all', { 'id': entity.id}) }}">
-    Check all Ip`s
+{% block stylesheets %}
+<link href="{{ asset('js/isWebServer.js') }}" type="text/javascript" />
+{% endblock %}
+
+{% block content %}
+<script>
+$(document).ready(function()
+{
+    $("a.ajaxable").click(function(event){
+        event.preventDefault(); 
+        var $alink = $(this);
+        var url = $alink.attr('href');
+        $alink.html('checking...');
+        var data = {};
+        $.post(
+          url,
+          data,
+          function(returnData) {
+            $alink.html(returnData.isWebServer); 
+          },
+          'json'
+        );
+
+      });
+});
+    </script>
+    <h1>IpRange</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Iprange</th>
+                <td>{{ entity.getIpRangee() }}</td>
+            </tr>
+            <tr>
+                <th>Datecheck</th>
+                <td>{{ entity.dateCheck|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Asidentifier</th>
+                <td>{{ asId.asidentifier }}</td>
+            </tr>
+            <tr>
+                <th>Asname</th>
+                <td>{{ asId.asname }}</td>
+            </tr>
+            <tr>
+                <th>Number of hosts for this IP: </th>
+                <td>{{numberOfHosts}}</td>
+            </tr>
+            <tr>
+                <th>IP`s range: </th>
+                <td>{{hostRange}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('autonomoussystem_check_all', { 'id': entity.id}) }}">
+        Check all Ip`s
     </a>
-<ul class="record_actions">
-    <li>
-         <a href="{{ path('autonomoussystem_show', { 'id': asId.id}) }}">
-            Back to the previous page
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('iprange_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('iprange_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-                <button type="submit">Delete</button>
-            </form>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('autonomoussystem_show', { 'id': asId.id}) }}">
+                Back to the previous page
+            </a>
         </li>
+        <li>
+            <a href="{{ path('iprange_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>
+            <form action="{{ path('iprange_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+    </ul>
+    <table>
     {% for iprange in ipAddr%}
-       <tr>
-           <td> 
-               <a href="#">{{iprange}}</a>
-           </td>
-           <td>
-               <a href="{{ path('show_ip', { 'ip': iprange, 'rangeid': entity.id }) }}">show</a>
-           </td>
-           <td>
-               <a href="{{ path('check_ip', { 'ip': iprange,'rangeid': entity.id }) }}">check</a>
-           </td>
-        <br/>
-    </tr>
+         <tr>
+                    <td> 
+                        <a href="#">{{iprange}}</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('show_ip', { 'ip': iprange, 'rangeid': entity.id }) }}">show</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('check_ip', { 'ip': iprange,'rangeid': entity.id }) }}" class="ajaxable">check</a>
+                    </td>
+                <br/>
+            </tr>
+        </table>    
 {% endfor %}
         <div class="navigation">
     {{ ipAddr.render()|raw }}
             </div>
-        </ul>
+
     {% endblock %}
