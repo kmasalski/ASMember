@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
 use Mcc\ASMemberBundle\Entity\IpRange;
+use Mcc\ASMemberBundle\Entity\Ip;
 use Mcc\ASMemberBundle\Form\AutonomousSystemType;
 
 /**
