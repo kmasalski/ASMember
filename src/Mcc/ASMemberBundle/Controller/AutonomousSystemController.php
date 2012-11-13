@@ -407,7 +407,7 @@ class AutonomousSystemController extends Controller {
             if ($retcode >= 200 && $retcode <= 500) {
 
                 $ip_adr = new Ip();
-                $ip_adr->setIp($ip);
+                $ip_adr->setIp($ip_addr[i]);
                 $ip_adr->setAutonomousSytem($asId);
                 $ip_adr->setIswebserver(1);
                 $ip_adr->setLastcheck(new \DateTime('now'));
