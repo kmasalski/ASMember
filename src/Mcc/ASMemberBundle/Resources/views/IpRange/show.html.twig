@@ -24,6 +24,29 @@ $(document).ready(function()
         );
 
       });
+      
+      $("a.checkAll").click(function(event){
+          event.preventDefault(); 
+          alert('jestem?')
+            $("a.ajaxable").each(function(event){
+                //event.preventDefault(); 
+                var $alink = $(this);
+                var url = $alink.attr('href');
+                $alink.html('checking...');
+                var data = {};
+                $.post(
+                  url,
+                  data,
+                  function(returnData) {
+                    $alink.html(returnData.isWebServer); 
+                  },
+                  'json'
+                );
+
+              });
+
+      });
+      
 });
     </script>
     <h1>IpRange</h1>
@@ -62,6 +85,9 @@ $(document).ready(function()
     </table>
     <a href="{{ path('autonomoussystem_check_all', { 'id': entity.id}) }}">
         Check all Ip`s
+    </a>
+    <a href="#" class="checkAll">
+        Check all Ip`s on the Page with Ajax
     </a>
     <ul class="record_actions">
         <li>
