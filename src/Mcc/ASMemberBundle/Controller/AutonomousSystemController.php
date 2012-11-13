@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
 use Mcc\ASMemberBundle\Entity\IpRange;
+use Mcc\ASMemberBundle\Entity\Ip;
 use Mcc\ASMemberBundle\Form\AutonomousSystemType;
 
 /**
@@ -412,7 +413,10 @@ class AutonomousSystemController extends Controller {
                 $ip_adr->setLastcheck(new \DateTime('now'));
                 $em->persist($ip_adr);
                 $em->flush();
+                echo $ip_addr[$i]." jest serwerem"."<br/>";
                 
+            }else{
+                echo $ip_addr[$i]." nie jest serwerem"."<br/>";
             }
         }
         return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
