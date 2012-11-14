@@ -1,54 +1,10 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
 
 {% block stylesheets %}
-<link href="{{ asset('js/isWebServer.js') }}" type="text/javascript" />
 {% endblock %}
 
 {% block content %}
-<script>
-$(document).ready(function()
-{
-    $("a.ajaxable").click(function(event){
-        event.preventDefault(); 
-        var $alink = $(this);
-        var url = $alink.attr('href');
-        $alink.html('checking...');
-        var data = {};
-        $.post(
-          url,
-          data,
-          function(returnData) {
-            $alink.html(returnData.isWebServer); 
-          },
-          'json'
-        );
 
-      });
-      
-      $("a.checkAll").click(function(event){
-          event.preventDefault(); 
-          alert('jestem?')
-            $("a.ajaxable").each(function(event){
-                //event.preventDefault(); 
-                var $alink = $(this);
-                var url = $alink.attr('href');
-                $alink.html('checking...');
-                var data = {};
-                $.post(
-                  url,
-                  data,
-                  function(returnData) {
-                    $alink.html(returnData.isWebServer); 
-                  },
-                  'json'
-                );
-
-              });
-
-      });
-      
-});
-    </script>
     <h1>IpRange</h1>
 
     <table class="record_properties">
@@ -86,7 +42,7 @@ $(document).ready(function()
     <ul class="record_actions">
         <li>
             <a href="#" class="checkAll">
-                Check all Ip`s on the Page with Ajax
+                Check all Ip`s on the page with ajax
             </a>
         </li>
         <li>
@@ -113,12 +69,15 @@ $(document).ready(function()
                     <td>
                         <a href="{{ path('check_ip', { 'ip': iprange,'rangeid': entity.id }) }}" class="ajaxable">check</a>
                     </td>
-                <br/>
+
             </tr>
-        </table>    
+        
 {% endfor %}
+            </table>    
         <div class="navigation">
     {{ ipAddr.render()|raw }}
             </div>
-
+<script>
+    var ajax = "{{ asset('images/ajax-loader.gif') }}";
+</script>
     {% endblock %}
