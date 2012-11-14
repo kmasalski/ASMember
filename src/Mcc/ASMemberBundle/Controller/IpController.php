@@ -350,9 +350,9 @@ class IpController extends Controller {
             $ip_adr->setLastcheck(new \DateTime('now'));
             $em->persist($ip_adr);
             $em->flush();
-            $answer = $ip . " jest Web Serwerem.";
+            $answer = $ip . " is web server";
         } else {
-            $answer = $ip . " nie jest Web Serwerem.";
+            $answer = $ip . " is not web server";
         }
         
         $request = $this->getRequest();

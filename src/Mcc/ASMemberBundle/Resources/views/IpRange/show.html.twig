@@ -5,7 +5,7 @@
 
 {% block content %}
 
-    <h1>IpRange</h1>
+    <h1>IP range: {{ entity.getIpRangee() }}</h1>
 
     <table class="record_properties">
         <tbody>
@@ -14,7 +14,7 @@
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Iprange</th>
+                <th>IP range</th>
                 <td>{{ entity.getIpRangee() }}</td>
             </tr>
             <tr>
@@ -22,11 +22,11 @@
                 <td>{{ entity.dateCheck|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
-                <th>Asidentifier</th>
+                <th>AS identifier</th>
                 <td>{{ asId.asidentifier }}</td>
             </tr>
             <tr>
-                <th>Asname</th>
+                <th>AS name</th>
                 <td>{{ asId.asname }}</td>
             </tr>
             <tr>
@@ -58,6 +58,7 @@
         
     </ul>
     <table>
+    <h2>List of IP adresses</h2>
     {% for iprange in ipAddr%}
          <tr>
                     <td> 

@@ -1,44 +1,26 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
 {% block content %}
-<h1>AutonomousSystem list</h1>
+<h1>List of Autonomous Systems</h1>
 
 <table class="records_list">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Asidentifier</th>
-            <th>Asname</th>
-            <th>Actions</th>
+            <th>AS identifier</th>
+            <th>AS name</th>
         </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
         <tr>
             <td><a href="{{ path('autonomoussystem_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.asidentifier }}</td>
+            <td><a href="{{ path('autonomoussystem_show', { 'id': entity.id }) }}">{{ entity.asidentifier }}</a></td>
             <td>{{ entity.asname }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('autonomoussystem_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('autonomoussystem_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
-<ul>
-    <li>
-        <a href="{{ path('autonomoussystem_new') }}">
-            Create a new entry
-        </a>
-    </li>
-</ul>
 <div class="navigation">
     {{ entities.render()|raw }}
 </div>
