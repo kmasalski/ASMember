@@ -167,7 +167,7 @@ table tr td {
 
 /* default links */
 a { 
-	color:#51007A !important;
+	color:#51007A;
         text-decoration: none !important;
 }
 a:visited { 
