@@ -1,8 +1,6 @@
 {# empty Twig template #}
 {% extends 'MccASMemberBundle::layout.html.twig' %}
-
-{% block content %}
-<h1>Show IP  {{ip}}</h1>
+{% block sidebar %}
 <table class="record_properties">
     <tbody>
         <tr>
@@ -23,6 +21,14 @@
         </tr>
     </tbody>
 </table>
+<ul class="record_actions">
+    <li>
+    <a onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</a> 
+    </li>
+    </ul>
+ {% endblock %}
+
+{% block content %}
 <h2>Informacje o adresie IP:</h2>
 
 {% if komunikat == 1 %}
@@ -31,7 +37,7 @@
         Adres IP: {{ip}} nie był sprawdzany
     </td>
     <td>
-        <a href="{{ path('check_ip', { 'ip': ip,'rangeid': rangeId }) }}">check</a>
+        <a href="{{ path('check_ip', { 'ip': ip,'rangeid': rangeId }) }}" class="ajaxable">check</a>
     </td>
 </tr>
 {% else %}
@@ -47,7 +53,8 @@
     </td>
 </tr>
     {% endif %}
-<br/>
-<span onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</span> 
+<script>
+    var ajax = "{{ asset('images/ajax-loader.gif') }}";
+</script>
 
     {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
-{% block content %}
-<h1>Details of Autonomous System: {{ entity.asidentifier }}</h1>
+{% block sidebar %}
+<h4>Details of Autonomous System: {{ entity.asidentifier }}</h4>
 
 <table class="record_properties">
     <tbody>
@@ -18,18 +18,7 @@
         </tr>
     </tbody>
 </table>
-<h2>Ip ranges for this AS</h2>
-{% for iprange in rangeslist%}
-
-<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
-    <br/>
-{% endfor %}
-    
-    <div class="navigation">
-    {{ rangeslist.render()|raw }}
-      </div>
-    
-    <ul class="record_actions">
+<ul class="record_actions">
     <li>
         <a href="{{ path('autonomoussystem_serwers', { 'id': entity.id }) }}">
             Show all web servers for this AS</a>
@@ -40,4 +29,21 @@
         </a>
     </li>
     </ul>
+{% endblock %}
+
+{% block content %}
+<h4>Ip ranges for this AS</h4>
+<ul class="list">
+{% for iprange in rangeslist%}
+<li class="list.option">
+<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
+</li>
+{% endfor %}
+</ul>
+    
+    <div class="navigation">
+    {{ rangeslist.render()|raw }}
+      </div>
+    
+    
 {% endblock %}

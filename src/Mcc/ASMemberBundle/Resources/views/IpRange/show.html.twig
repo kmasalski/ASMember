@@ -1,13 +1,7 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
 
-{% block stylesheets %}
-{% endblock %}
-
-{% block content %}
-
-    <h1>IP range: {{ entity.getIpRangee() }}</h1>
-
-    <table class="record_properties">
+{% block sidebar %}
+<table class="record_properties">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -39,7 +33,7 @@
             </tr>
         </tbody>
     </table>
-    <ul class="record_actions">
+ <ul class="record_actions">
         <li>
             <a href="#" class="checkAll">
                 Check all Ip`s on the page with ajax
@@ -57,12 +51,25 @@
         </li>
         
     </ul>
+{% endblock %}
+
+{% block content %}
+
+    <h2>IP range: {{ entity.getIpRangee() }}</h2>
+
     <table>
-    <h2>List of IP adresses</h2>
+    <h3>List of IP adresses</h3>
+        <thead>
+        <tr>
+            <th>IP</th>
+            <th>Show</th>
+            <th>Check</th>
+        </tr>
+    </thead>
     {% for iprange in ipAddr%}
          <tr>
                     <td> 
-                        <a href="#">{{iprange}}</a>
+                        {{iprange}}
                     </td>
                     <td>
                         <a href="{{ path('show_ip', { 'ip': iprange, 'rangeid': entity.id }) }}">show</a>

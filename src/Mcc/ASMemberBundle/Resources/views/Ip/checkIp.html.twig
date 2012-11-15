@@ -1,6 +1,5 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
-{% block content %}
-<h1>Check IP  {{ip}}</h1>
+{% block sidebar %}
 <table class="record_properties">
     <tbody>
         <tr>
@@ -21,8 +20,12 @@
         </tr>
     </tbody>
 </table>
-<h2>Wynik sprawdzania</h2>
+<a onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</a>
+{% endblock %}
+{% block content %}
+<h2>Check IP  {{ip}}</h2>
+
+<h3>Wynik sprawdzania</h3>
 {{answer}}
-<br/>
-<span onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</span>
+
     {% endblock %}

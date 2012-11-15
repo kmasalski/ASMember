@@ -1,4 +1,100 @@
-{% extends '::base.html.twig' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="{{ asset('css/styles.css') }}"	rel="stylesheet" type="text/css" media="only screen">
+<link rel="Shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>
+    {% block title %}ASMember
+    {% endblock %}
+</title>
+
+</head>
+<body>
+    {% block body %}{% endblock %}
+
+        {% javascripts  '@MccASMemberBundle/Resources/public/js/*' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts  %}
+<div class="header">
+	<div class="outernav">
+		<div class="nav">
+			<div class="innernav">
+				<ul>
+				
+					<!-- MENU -->
+					<li><a href="/ASMember/web/app_dev.php/">Home</a></li>
+
+					<!-- END MENU -->
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+		
+	<div class="clear"></div>
+	
+	<div class="title">
+		<div class="innertitle">
+			
+			<!-- TITLE -->
+			<h1><a href="ASMember/web/app_dev.php/">ASMember</a></h1>
+			<h2>Jakis pomysl?</h2>
+			<!-- END TITLE -->
+			
+		</div>
+	</div>
+</div>
+<div id="wrap">
+	<div class="pagewrapper">
+		<div class="innerpagewrapper">
+			<div class="page">
+                            <div class="main_content">
+				<div class="content">
+				
+					<!-- CONTENT -->
+					 {% block content %}
+                                         {% endblock %}
+					
+					<!-- END CONTENT -->
+					
+				</div>
+				
+				<div class="sidebar">	
+					
+					<!-- SIDEBAR -->
+                                        {% block sidebar %}
+                                        
+					<h4>About us</h4>
+					<p>A little bit of information about your website, what you do, what's on offer and why visitors should stick around</p>
+		
+					<h4>Links</h4>
+					<ul>
+						<li><a href="http://www.spyka.net" title="spyka Webmaster resources">spyka webmaster</a></li>
+						<li><a href="http://www.justfreetemplates.com" title="free web templates">JustFreeTemplates</a></li>
+						<li><a href="http://www.spyka.net/forums" title="webmaster forums">Webmaster forums</a></li>
+						<li><a href="http://www.profileartist.net" title="premium templates">Premium templates</a></li>
+		
+						<li><a href="http://www.awesomestyles.com" title="free forum skins and templates">Forum resources</a></li>
+		
+					</ul>
+	                                 {% endblock %}       
+					<!-- SIDEBAR -->
+			
+				</div>
+                                </div>
+				<div class="footer">
+					<p><a href="http://validator.w3.org/check/referer" title="valid XHTML">XHTML</a> | &copy;  Konrad Masalski 168003, Pawel Christow 174990</p> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+           
+{#{% extends '::base.html.twig' %}
 
 {% block stylesheets %}
 
@@ -25,4 +121,4 @@
     <footer>
         <p>Konrad Masalski 168003, Pawel Christow 174990</p>
     </footer>
-{% endblock %}
+{% endblock %}#}

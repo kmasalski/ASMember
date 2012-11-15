@@ -1,7 +1,5 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
-{% block content %}
-<h1>AutonomousSystem</h1>
-
+{% block sidebar %}
 <table class="record_properties">
     <tbody>
         <tr>
@@ -21,19 +19,25 @@
 <span onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</span>
 <br/>
 
-{% if help == 1 %}
-{% for ip in serwers%}
+{% endblock %}
+{% block content %}
+<h2>Autonomous System Serwers</h2>
 
+
+{% if help == 1 %}
+<ul class="list">
+{% for ip in serwers%}
+<li class="list.option">
 {{ip.getIp}}
-    <br/>
+    </li>
 {% endfor %}
-    
+</ul>
     <div class="navigation">
     {{ serwers.render()|raw }}
       </div>
     {% endif %}
     {%if help == 0%}
-    Niestety dla tego AS nie ma zapisane IP adresów serwerów
+<h3>Niestety dla tego AS nie ma zapisane IP adresów serwerów</h3>
     {% endif %}
 
     {% endblock %}
