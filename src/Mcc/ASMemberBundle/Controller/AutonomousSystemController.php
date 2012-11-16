@@ -404,7 +404,7 @@ class AutonomousSystemController extends Controller {
             $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            if ($retcode >= 200 && $retcode <= 500) {
+            if ($retcode >= 100 && $retcode <= 505) {
 
                 $ip_adr = new Ip();
                 $ip_adr->setIp($ip_addr[i]);

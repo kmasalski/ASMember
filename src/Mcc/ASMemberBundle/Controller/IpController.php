@@ -181,7 +181,7 @@ class IpController extends Controller {
         curl_exec($ch);
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        if ($retcode >= 200 && $retcode <= 500) {
+        if ($retcode >= 100 && $retcode <= 505) {
             echo "work " . $retcode . "<br/>";
         } else {
             echo "nie dziala " . $retcode . "<br/>";
@@ -341,7 +341,7 @@ class IpController extends Controller {
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($retcode >= 200 && $retcode <= 500) {
+        if ($retcode >= 100 && $retcode <= 505) {
 
             $ip_adr = new Ip();
             $ip_adr->setIp($ip);
