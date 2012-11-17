@@ -23,6 +23,7 @@ class AutonomousSystemController extends Controller {
      *
      */
     public function indexAction() {
+        $searchForm = $this->createSearchForm();
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
@@ -32,6 +33,7 @@ class AutonomousSystemController extends Controller {
         );
         return $this->render('MccASMemberBundle:AutonomousSystem:index.html.twig', array(
                     'entities' => $pagination,
+                    'search_form' => $searchForm->createView(),
                 ));
     }
 
@@ -77,7 +79,22 @@ class AutonomousSystemController extends Controller {
                     'form' => $form->createView(),
                 ));
     }
-
+    
+    /**
+     * Search for AutonomousSystem.
+     *
+     */
+    public function searchAction(Request $request) {
+        $searchForm = $this->createSearchForm();
+        $searchForm->bind($request);
+        $formData = $searchForm->getData();
+        $asIdentifier = $formData['asIdentifier'];
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneByAsidentifier($asIdentifier);
+        
+        return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));     
+    }
+    
     /**
      * Creates a new AutonomousSystem entity.
      *
@@ -185,6 +202,13 @@ class AutonomousSystemController extends Controller {
         ;
     }
 
+    private function createSearchForm() {
+        return $this->createFormBuilder()
+                        ->add('asIdentifier', 'text')
+                        ->getForm()
+        ;
+    }
+    
     /**
      * Parses cidr report to get ranges
      * saves ip ranges to database

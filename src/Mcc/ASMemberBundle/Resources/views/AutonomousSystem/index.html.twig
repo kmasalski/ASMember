@@ -1,5 +1,10 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
 {% block content %}
+<h2>Representatives searching</h2>
+    <form action="{{ path('autonomoussystem_search') }}" method="post">
+        {{ form_widget(search_form) }}
+        <button type="submit">Search</button>
+    </form>
 <h2>List of Autonomous Systems</h2>
 
 <table class="records_list">

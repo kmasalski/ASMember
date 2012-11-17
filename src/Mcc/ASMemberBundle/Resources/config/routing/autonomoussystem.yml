@@ -28,6 +28,11 @@ autonomoussystem_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:delete" }
     requirements: { _method: post }
+    
+autonomoussystem_search:
+    pattern:  /search
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:search" }
+    requirements: { _method: post }    
 
 #autonomoussystem_parse:
 #    pattern:  /{asId}
