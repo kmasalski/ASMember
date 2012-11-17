@@ -53,16 +53,24 @@ class AutonomousSystemController extends Controller {
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
 
         $deleteForm = $this->createDeleteForm($id);
-
+        //będę miał czas to przesniosę tę część do odrębnej metody -Konrad
+        $qb = $em->createQueryBuilder();
+        $qb->select('r')
+                ->from('Mcc\ASMemberBundle\Entity\Ip', 'r')
+                ->where('r.asidentifier = :asidentifier')
+                ->setParameter('asidentifier', $entity->getAsIdentifier());
+        
+        $representatives = $qb->getQuery()->getResult();
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
+        $paginatedRanges = $paginator->paginate(
                 $ranges, $this->get('request')->query->get('page', 1)/* page number */, 15/* limit per page */
         );
 
         return $this->render('MccASMemberBundle:AutonomousSystem:show.html.twig', array(
                     'entity' => $entity,
+                    'representatives' => $representatives,
                     /* 'ranges' => $ranges, */
-                    'rangeslist' => $pagination,
+                    'rangeslist' => $paginatedRanges,
                     'delete_form' => $deleteForm->createView(),));
     }
 
@@ -289,7 +297,7 @@ class AutonomousSystemController extends Controller {
           }
           }
           return new Response('Everything went ok'); */
-        return new Response('Ta funkcja jest zakodowana w Controlle-rze aby nie doszło do aktualizacji bazy danych przez prypadek.');
+        return new Response('Ta funkcja jest zakomentowana w Controlle-rze aby nie doszło do aktualizacji bazy danych przez prypadek.');
     }
 
     public function parseAsNameAction() {

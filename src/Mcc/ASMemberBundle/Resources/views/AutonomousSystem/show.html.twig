@@ -1,6 +1,5 @@
 {% extends 'MccASMemberBundle::layout.html.twig' %}
 {% block sidebar %}
-<h4>Representatives</h4>
 <h4>Details of Autonomous System: {{ entity.asidentifier }}</h4>
 
 <table class="record_properties">
@@ -33,12 +32,24 @@
 {% endblock %}
 
 {% block content %}
+<h4>Representatives</h4>
+{% if representatives|length >0%}
+<ul class="list">
+{% for representantive in representatives%}
+    <li class="list.option">
+        <a href="{{ path('ip_show', { 'id': representantive.id }) }}">{{representantive.getIp()}}</a>
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+    <p>No represantives found you can <a href="#">start looking for</a> them.</p>
+{% endif %}
 <h4>Ip ranges for this AS</h4>
 <ul class="list">
 {% for iprange in rangeslist%}
-<li class="list.option">
-<a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
-</li>
+    <li class="list.option">
+        <a href="{{ path('iprange_show', { 'id': iprange.id }) }}">{{iprange.getIpRangee()}}</a>
+    </li>
 {% endfor %}
 </ul>
     
