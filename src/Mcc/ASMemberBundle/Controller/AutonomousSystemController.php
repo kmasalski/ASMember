@@ -383,6 +383,10 @@ class AutonomousSystemController extends Controller {
                 ));
     }
 
+    /*
+     * Metoda powinna sprawdzać dla tych ip ktore nie są juz serwerami
+     * jak już znalazłem 10 serwerów to stop
+     */
     public function checkAllAction($id) {
 
         $em = $this->getDoctrine()->getManager();
@@ -445,15 +449,99 @@ class AutonomousSystemController extends Controller {
                 $ip_adr->setLastcheck(new \DateTime('now'));
                 $em->persist($ip_adr);
                 $em->flush();
-                echo $ip_addr[$i]." jest serwerem"."<br/>";
+                echo $ip_addr[$i]." is webserver"."<br/>";
                 
             }else{
-                echo $ip_addr[$i]." nie jest serwerem"."<br/>";
+                echo $ip_addr[$i]." is not webserver"."<br/>";
             }
         }
         return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
                     'as' => $as,
                 ));
     }
+    
+    /*
+     * korzystam z reversedns string gethostbyaddr ( string $ip_address )
+     */
+    public function findRepresentativesAction($id) {
+        
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find IpRange entity.');
+        }
+        /* START ASid
+         * Pobieram AsId dla danego IP-Range że by pobrać nazwa AS oraz numer AS aby móć ich wyświetlić 
+         */
+        $asId = $entity->getAsid();
+        $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneById($asId);
+        /* END ASid
+         */
+
+        /* START Rozpiski IP
+         * Rozpisanie wszystkie możliwe IP dla danego zakresu
+         */
+        ini_set('max_execution_time', 30000000000);
+
+        $ip_range = $entity->getIpRangee();
+        $ip_arr = explode('/', $ip_range);
+
+        $bin = '';
+        for ($i = 1; $i <= 32; $i++) {
+            $bin .= $ip_arr[1] >= $i ? '1' : '0';
+        }
+        $ip_arr[1] = bindec($bin);
+
+        $ip = ip2long($ip_arr[0]);
+        $nm = ip2long($ip_arr[1]);
+        $nw = ($ip & $nm);
+        $bc = $nw | (~$nm);
+
+        $number_of_host = ($bc - $nw - 1);
+        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+        $ip_addr = array();
+
+        for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
+            $ip_addr[$zm] = long2ip($nw + $zm);
+        }
+
+        for ($i = 1; $i < sizeof($ip_addr) + 1; $i++) {
+            
+            $url = $ip_addr[$i];
+                
+            if ($this -> checkIpByReverseDns($url)) {
+                $ip_adr = new Ip();
+                $ip_adr->setIp($ip_addr[i]);
+                $ip_adr->setAutonomousSytem($asId);
+                $ip_adr->setIswebserver(1);
+                $ip_adr->setLastcheck(new \DateTime('now'));
+                $em->persist($ip_adr);
+                $em->flush();
+                echo $ip_addr[$i]." is webserver"."<br/>";
+                
+            }else{
+                echo $ip_addr[$i]." is not webserver"."<br/>";
+            }
+        }
+        return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
+                    'as' => $as,
+                ));
+    }
+    /*
+     * zwraca false jeżeli nie jest web serwerem true jeżeli jest
+     */
+    public function checkIpByReverseDns($ip) {
+        $reversedns = gethostbyaddr($ip);
+        if($reversedns != $ip and $reversedns != FALSE)
+        {
+            return true;
+        }
+
+        return false;
+        
+    }
+    
 
 }

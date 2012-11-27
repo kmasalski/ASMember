@@ -53,3 +53,7 @@ autonomoussystem_serwers:
 autonomoussystem_check_all:
     pattern:  /{id}/checkAll
     defaults: { _controller: "MccASMemberBundle:AutonomousSystem:checkAll" }  
+    
+autonomoussystem_find_representatives:
+    pattern:  /{id}/findRepresentatives
+    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:findRepresentatives" }      

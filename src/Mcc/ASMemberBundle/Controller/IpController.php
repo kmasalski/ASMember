@@ -333,13 +333,7 @@ class IpController extends Controller {
 
         $ipRange = $entity->getIpRangee();
 
-        $url = $ip;
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($ch);
-        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $retcode = $this->checkIpByCurl($ip);
 
         if ($retcode >= 100 && $retcode <= 505) {
 
@@ -375,5 +369,22 @@ class IpController extends Controller {
                     ));
         }
     }
+    /*
+     * Sprawdza czy ip jest web serwerem używając curla
+     * 
+     * zwraca return code curla, 200 ok 40x -błąd po stronie klienta itp...
+     */
+    public function checkIpByCurl($ip) {
+    
+        $ch = curl_init($ip);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $retcode;
+    }
+
+
 
 }

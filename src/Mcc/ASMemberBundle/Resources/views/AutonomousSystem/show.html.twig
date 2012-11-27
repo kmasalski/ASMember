@@ -42,7 +42,7 @@
 {% endfor %}
 </ul>
 {% else %}
-    <p>No represantives found you can <a href="#">start looking for</a> them.</p>
+    <p>No represantives found you can <a href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start looking for</a> them.</p>
 {% endif %}
 <h4>Ip ranges for this AS</h4>
 <ul class="list">
