@@ -124,4 +124,9 @@ class IpRange
     {
         return $this->dateCheck;
     }
+    
+        public function __toString()
+    {
+       return $this->IpRange;
+    }
 }

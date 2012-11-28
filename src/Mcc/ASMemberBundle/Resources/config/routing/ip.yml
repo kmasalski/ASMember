@@ -32,6 +32,12 @@ ip_delete:
 show_ip:
     pattern:  /show/{rangeid}/{ip}
     defaults: { _controller: "MccASMemberBundle:Ip:showIp" }
+
 check_ip:
     pattern:  /check/{rangeid}/{ip}
     defaults: { _controller: "MccASMemberBundle:Ip:checkIp" }
+
+test:
+    pattern:  /test
+    defaults: { _controller: "MccASMemberBundle:Ip:test" }
+ 

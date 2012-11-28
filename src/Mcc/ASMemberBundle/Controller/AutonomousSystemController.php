@@ -51,7 +51,8 @@ class AutonomousSystemController extends Controller {
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-
+       echo strval($ranges[1]);
+        
         $deleteForm = $this->createDeleteForm($id);
         //będę miał czas to przesniosę tę część do odrębnej metody -Konrad
         $qb = $em->createQueryBuilder();
@@ -59,7 +60,7 @@ class AutonomousSystemController extends Controller {
                 ->from('Mcc\ASMemberBundle\Entity\Ip', 'r')
                 ->where('r.asidentifier = :asidentifier')
                 ->setParameter('asidentifier', $entity->getAsIdentifier());
-        
+
         $representatives = $qb->getQuery()->getResult();
         $paginator = $this->get('knp_paginator');
         $paginatedRanges = $paginator->paginate(
@@ -87,7 +88,7 @@ class AutonomousSystemController extends Controller {
                     'form' => $form->createView(),
                 ));
     }
-    
+
     /**
      * Search for AutonomousSystem.
      *
@@ -99,10 +100,10 @@ class AutonomousSystemController extends Controller {
         $asIdentifier = $formData['asIdentifier'];
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findOneByAsidentifier($asIdentifier);
-        
-        return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));     
+
+        return $this->redirect($this->generateUrl('autonomoussystem_show', array('id' => $entity->getId())));
     }
-    
+
     /**
      * Creates a new AutonomousSystem entity.
      *
@@ -216,7 +217,7 @@ class AutonomousSystemController extends Controller {
                         ->getForm()
         ;
     }
-    
+
     /**
      * Parses cidr report to get ranges
      * saves ip ranges to database
@@ -229,18 +230,16 @@ class AutonomousSystemController extends Controller {
         echo $asId;
         $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=' . $as->getAsIdentifier() . '&view=2.0';
 
-        //$pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
         $crawler = new Crawler(file_get_contents($pageAddress));
 
         $asName = $crawler->filterXpath('//body/ul')->text();
 
-        //return new Response(var_dump($asName));
 
         $as->setAsname($asName);
         $em->persist($as);
-//(array('my_field' => 'value'))
+
         $crawler->filter('a.black')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-                    //  if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue))))/*IpRange($node->nodeValue)))*/ {
+
                     $ipRange = new IpRange();
                     $ipRange->setAsId($as);
                     $ipRange->setDateCheck(new \DateTime('now'));
@@ -249,34 +248,8 @@ class AutonomousSystemController extends Controller {
                     if (!$i % 1000) {
                         $em->flush();
                     }
-                    // }
                 });
 
-        /*
-          $crawler->filter('a.red')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-          // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
-          $ipRange = new IpRange();
-          $ipRange->setAsId($as);
-          $ipRange->setDateCheck(new \DateTime('now'));
-          $ipRange->setIpRange($node->nodeValue);
-          $em->persist($ipRange);
-          if (!$i % 300) {
-          $em->flush();
-          }
-          // }
-          });
-          $crawler->filter('a.green')->each(function ($node, $i) use (&$em, &$as, &$ipRange) {
-          // if (is_null($em->getRepository('MccASMemberBundle:IpRange')->findOneBy(array('IpRange'=>$node->nodeValue)))) {
-          $ipRange = new IpRange();
-          $ipRange->setAsId($as);
-          $ipRange->setDateCheck(new \DateTime('now'));
-          $ipRange->setIpRange($node->nodeValue);
-          $em->persist($ipRange);
-          if (!$i % 300) {
-          $em->flush();
-          }
-          //  }
-          }); */
         $em->flush();
         return new Response('Everything went ok');
     }
@@ -285,6 +258,10 @@ class AutonomousSystemController extends Controller {
      * Calls parse function for every AS id
      */
     public function parseAllAction() {
+        /* P@wel
+         * Poniższy kod jest zakomentowany ze wzgledu na to aby nikt nie zrobił 
+         * przez przypadek aktualizacje baz danych jeśli chodzi o IpRagen
+         */
         /* $em = $this->getDoctrine()->getManager();
           ini_set('max_execution_time', 30000000000);
           $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
@@ -311,7 +288,6 @@ class AutonomousSystemController extends Controller {
 
                     $ASys = new AutonomousSystem();
                     $ASys->setAs($node->nodeValue);
-                    //$em = $this->getDoctrine()->getEntityManager();
                     $em->persist($ASys);
                     if ($i % 100 == 0) {
                         $em->flush();
@@ -320,34 +296,6 @@ class AutonomousSystemController extends Controller {
         $em->flush();
         return new Response(var_dump($crawler));
     }
-
-    /*
-      public function testingAction() {
-
-      // $em = $this->getDoctrine()->getManager();
-      ini_set('max_execution_time', 30000000000);
-      //  $as = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($asId);
-      //echo $asId;
-      $pageAddress = 'http://www.cidr-report.org/cgi-bin/as-report?as=AS4134&view=2.0';
-
-      // $pageAddress= 'http://www.cidr-report.org/cgi-bin/as-report?as=AS8970&view=2.0';
-      $crawler = new Crawler(file_get_contents($pageAddress));
-
-      //$asName = $crawler->filterXpath('//body/ul')->text();
-
-      //return new Response(var_dump($asName));
-
-      //$as->setAsname($asName);
-      // $em->persist($as);
-
-      // $kino=$crawler->filterXpath(('//body/ul')->extract(array('_text', 'class'));
-      $attributes = $crawler->filterXpath('//body/ul')->extract(array('a', 'black'));
-
-      return new Response(var_dump($attributes));
-
-
-      }
-     */
 
     public function serwersAction($id) {
 
@@ -387,6 +335,7 @@ class AutonomousSystemController extends Controller {
      * Metoda powinna sprawdzać dla tych ip ktore nie są juz serwerami
      * jak już znalazłem 10 serwerów to stop
      */
+
     public function checkAllAction($id) {
 
         $em = $this->getDoctrine()->getManager();
@@ -431,7 +380,7 @@ class AutonomousSystemController extends Controller {
         }
 
         for ($i = 1; $i < sizeof($ip_addr) + 1; $i++) {
-            
+
             $url = $ip_addr[$i];
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -449,23 +398,23 @@ class AutonomousSystemController extends Controller {
                 $ip_adr->setLastcheck(new \DateTime('now'));
                 $em->persist($ip_adr);
                 $em->flush();
-                echo $ip_addr[$i]." is webserver"."<br/>";
-                
-            }else{
-                echo $ip_addr[$i]." is not webserver"."<br/>";
+                echo $ip_addr[$i] . " is webserver" . "<br/>";
+            } else {
+                echo $ip_addr[$i] . " is not webserver" . "<br/>";
             }
         }
         return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
                     'as' => $as,
                 ));
     }
-    
+
     /*
      * korzystam z reversedns string gethostbyaddr ( string $ip_address )
      */
+
     public function findRepresentativesAction($id) {
-        
-        
+
+
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MccASMemberBundle:IpRange')->find($id);
 
@@ -508,10 +457,10 @@ class AutonomousSystemController extends Controller {
         }
 
         for ($i = 1; $i < sizeof($ip_addr) + 1; $i++) {
-            
+
             $url = $ip_addr[$i];
-                
-            if ($this -> checkIpByReverseDns($url)) {
+
+            if ($this->checkIpByReverseDns($url)) {
                 $ip_adr = new Ip();
                 $ip_adr->setIp($ip_addr[i]);
                 $ip_adr->setAutonomousSytem($asId);
@@ -519,29 +468,27 @@ class AutonomousSystemController extends Controller {
                 $ip_adr->setLastcheck(new \DateTime('now'));
                 $em->persist($ip_adr);
                 $em->flush();
-                echo $ip_addr[$i]." is webserver"."<br/>";
-                
-            }else{
-                echo $ip_addr[$i]." is not webserver"."<br/>";
+                echo $ip_addr[$i] . " is webserver" . "<br/>";
+            } else {
+                echo $ip_addr[$i] . " is not webserver" . "<br/>";
             }
         }
         return $this->render('MccASMemberBundle:AutonomousSystem:checkAllIp.html.twig', array(
                     'as' => $as,
                 ));
     }
+
     /*
      * zwraca false jeżeli nie jest web serwerem true jeżeli jest
      */
+
     public function checkIpByReverseDns($ip) {
         $reversedns = gethostbyaddr($ip);
-        if($reversedns != $ip and $reversedns != FALSE)
-        {
+        if ($reversedns != $ip and $reversedns != FALSE) {
             return true;
         }
 
         return false;
-        
     }
-    
 
 }

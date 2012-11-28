@@ -186,96 +186,6 @@ class IpController extends Controller {
         } else {
             echo "nie dziala " . $retcode . "<br/>";
         }
-
-        /*
-          ini_set('max_execution_time', 30000000000);
-          $em = $this->getDoctrine()->getEntityManager();
-          $ases = $em->getRepository('MccASMemberBundle:AutonomousSystem')->findAll();
-
-          foreach ($ases as $as) {
-          $id_as = $as->getId();
-          $as_ip_range = $em->getRepository('MccASMemberBundle:IpRange')->find($id_as);
-
-          $ip_addr_cidr = $as_ip_range->getIpRangee();
-          $ip_arr = explode('/', $ip_addr_cidr);
-
-          $bin = '';
-          for ($i = 1; $i <= 32; $i++) {
-          $bin .= $ip_arr[1] >= $i ? '1' : '0';
-          }
-          $ip_arr[1] = bindec($bin);
-
-          $ip = ip2long($ip_arr[0]);
-          $nm = ip2long($ip_arr[1]);
-          $nw = ($ip & $nm);
-          $bc = $nw | (~$nm);
-
-          for ($zm = 1; $zm <= ($bc - $nw - 1); $zm++) {
-          //echo long2ip($nw + $zm) . "<br/>";}
-          /* $em = $this->getDoctrine()->getEntityManager();
-          $ip_adr = new Ip();
-          $ip_adr->setIp(long2ip($nw + $zm));
-          $ip_adr->setAutonomousSytem($as);
-          $em->persist($ip_adr);
-
-
-          //  $em->flush();
-          if ($zm % 5000 == 0) {
-          // echo "Number of Hosts:    " . ($bc - $nw - 1) . "<br/>";
-          // echo $zm . " ";
-          $em->flush();
-          } */
-        /*   echo $zm."<br/>";
-          $url = long2ip($nw + $zm);
-          $ch = curl_init($url);
-          curl_setopt($ch, CURLOPT_NOBODY, true);
-          curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-          curl_exec($ch);
-          $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-          curl_close($ch);
-          if ($retcode >= 200 && $retcode <= 500) {
-          echo "work " . $retcode . long2ip($nw + $zm)."<br/>";
-          $ip_adr = new Ip();
-          $ip_adr->setIp(long2ip($nw + $zm));
-          $ip_adr->setAutonomousSytem($as);
-          $ip_adr->setIswebserver(1);
-          $em->persist($ip_adr);
-          $em->flush();
-          } else {
-          echo "nie dziala " . $retcode. long2ip($nw + $zm)."<br/>";
-          $ip_adr = new Ip();
-          $ip_adr->setIp(long2ip($nw + $zm));
-          $ip_adr->setAutonomousSytem($as);
-          $ip_adr->setIswebserver(0);
-          $em->persist($ip_adr);
-          $em->flush();
-          }
-          }
-          echo "koniec";
-          $em->flush();
-          }
-          /*
-          $ip_addr_cidr = "192.256.0.0/16";
-          $ip_arr = explode('/', $ip_addr_cidr);
-
-          $bin = '';
-          for ($i = 1; $i <= 32; $i++) {
-          $bin .= $ip_arr[1] >= $i ? '1' : '0';
-          }
-          $ip_arr[1] = bindec($bin);
-
-          $ip = ip2long($ip_arr[0]);
-          $nm = ip2long($ip_arr[1]);
-          $nw = ($ip & $nm);
-          $bc = $nw | (~$nm);
-
-          echo "Number of Hosts:    " . ($bc - $nw - 1) . "<br/>";
-          echo "Host Range:         " . long2ip($nw + 1) . " -> " . long2ip($bc - 1) . "<br/>" . "<br/>";
-
-          for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
-          echo long2ip($nw + $zm) . "<br/>";
-
-         */
     }
 
     /*
@@ -296,17 +206,17 @@ class IpController extends Controller {
         $asName = $as->getAsname();
 
         $ipRange = $entity->getIpRangee();
-        
+
         $komunikat = 0;
-        
+
         $ip_addr = $em->getRepository('MccASMemberBundle:Ip')->findOneByIp($ip);
         if (!$ip_addr) {
-               $komunikat = 1;
+            $komunikat = 1;
         }
-        
+
         return $this->render('MccASMemberBundle:Ip:showIp.html.twig', array(
                     'komunikat' => $komunikat,
-                   // 'info' =>   $ip_addr_id,
+                    // 'info' =>   $ip_addr_id,
                     'rangeId' => $rangeid,
                     'range' => $ipRange,
                     'ip_addr' => $ip_addr,
@@ -348,7 +258,7 @@ class IpController extends Controller {
         } else {
             $answer = $ip . " is not web server";
         }
-        
+
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
 
@@ -356,9 +266,8 @@ class IpController extends Controller {
             $return = json_encode($returnArray); //jscon encode the array
 
             return new Response($return, 200);
-        } 
-        else {
-        
+        } else {
+
             return $this->render('MccASMemberBundle:Ip:checkIp.html.twig', array(
                         'answer' => $answer,
                         'rangeId' => $rangeid,
@@ -369,13 +278,15 @@ class IpController extends Controller {
                     ));
         }
     }
+
     /*
      * Sprawdza czy ip jest web serwerem używając curla
      * 
      * zwraca return code curla, 200 ok 40x -błąd po stronie klienta itp...
      */
+
     public function checkIpByCurl($ip) {
-    
+
         $ch = curl_init($ip);
         curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -385,6 +296,148 @@ class IpController extends Controller {
         return $retcode;
     }
 
+    public function testAction() {
+        $em = $this->getDoctrine()->getManager();
 
+        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(22090);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
+        }
+
+        $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
+        $count = sizeof($ranges);
+
+        for ($c = 0; $c < $count; $c++) {
+            ini_set('max_execution_time', 30000000000);
+            $range[] = "range" . $c;
+            ${$range[$c]} = array();
+        }
+       /* for ($c = 0; $c < 10; $c++) {
+            $ip_range = $ranges[$c];
+            $ip_arr = explode('/', $ip_range);
+
+            $bin = '';
+            for ($i = 1; $i <= 32; $i++) {
+                $bin .= $ip_arr[1] >= $i ? '1' : '0';
+            }
+            $ip_arr[1] = bindec($bin);
+
+            $ip = ip2long($ip_arr[0]);
+            $nm = ip2long($ip_arr[1]);
+            $nw = ($ip & $nm);
+            $bc = $nw | (~$nm);
+
+            $number_of_host = ($bc - $nw - 1);
+            $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+
+            for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
+                ${$range[$c]}[$zm] = long2ip($nw + $zm);
+            }
+        }
+
+
+
+        for ($x = 0; $x < 3; $x++) {
+            for ($i = 0; $i < 10; $i++) {
+
+
+                $liczba_ip = count(${$range[$x]});
+                if ($liczba_ip == 0) {
+                    unset($ranges[$x]);
+                }
+                echo "x = " . $x . " zanim zacznie to mam tyle ip: " . $liczba_ip . "<br/>";
+                $losowa = rand(0, $liczba_ip);
+                $ip = ${$range[$x]}[$losowa];
+                $reversedns = gethostbyaddr($ip);
+                if ($reversedns != $ip and $reversedns != FALSE) {
+                    echo $ip . " jest serwerewm" . "<br/>";
+                }
+                echo $ip . " nie jest serwerewm" . "<br/>";
+                unset(${$range[$x]}[$losowa]);
+                echo "po zakonczeniu mam tile ip: " . count(${$range[$x]}) . "<br/>";
+            }
+        }*/
+
+        $wielkoscProbki = 10;
+        $iloscBadan = 10;
+        for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
+            $y = min($y, $count-$i1);
+            for ($i11 = 0; $i11 < $wielkoscProbki; $i11++) {
+                $badanaProbka[$i11] = rangeToArray($ranges[$i1 + $i11]);
+                $bools[$i11] = true;
+            }
+
+            while (checkBools($bools)) {
+                for ($i2 = 0; $i2 < $wielkoscProbki; $i2++) {
+                    for ($i3 = 0; $i3 < $iloscBadan || $bools[$i2]; $i3++) {
+                        $bools[$i2] = doDNSReverse($badanaProbka[$i2]);
+                    }
+                }
+            }
+        }
+
+        // }
+
+        return $this->render('MccASMemberBundle:Ip:test.html.twig', array(
+                ));
+    }
+
+    public function checkBools($bools) {
+        foreach ($bool as $bools) {
+            if ($bool)
+                return true;
+        }
+        return false;
+    }
+
+    public function rangeToArray($range) {
+        /*
+         * Zwraca tablice zapelniona adresami ip dla danego rangea
+         */
+        $ip_range = $range;
+        $ip_arr = explode('/', $ip_range);
+
+        $bin = '';
+        for ($i = 1; $i <= 32; $i++) {
+            $bin .= $ip_arr[1] >= $i ? '1' : '0';
+        }
+        $ip_arr[1] = bindec($bin);
+
+        $ip = ip2long($ip_arr[0]);
+        $nm = ip2long($ip_arr[1]);
+        $nw = ($ip & $nm);
+        $bc = $nw | (~$nm);
+
+        $number_of_host = ($bc - $nw - 1);
+        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+
+        for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
+            $array[$zm] = long2ip($nw + $zm);
+        }
+        return $array;
+    }
+
+    public function doDNSReverse($array) {
+        /*
+         * 1. Losuje liczbe z zasiegu 0-> sizeof($array)
+         * 2. Bada dla wylosowanej liczby
+         * 3. Usuwa wylosowana liczbe z array (metoda ktora znalzl konrad)
+         * 4. Jesli tablica jest pusta zwraca false, else zwraca true
+         */
+        $losowa = rand(0, sizeof($array));
+        $ip = $array[$losowa];
+        $reversedns = gethostbyaddr($ip);
+        if ($reversedns != $ip and $reversedns != FALSE) {
+            echo $ip . " jest serwerem" . "<br/>";
+        }
+        echo $ip . " nie jest serwerewm" . "<br/>";
+        unset($array[$losowa]);//musimy zmienic na to ze usuwa i przesuwa tablice
+        $array = array_values($array);
+        if (sizeof($array) > 1) {
+            return true;
+        }
+        return false;
+    }
 
 }
