@@ -299,81 +299,83 @@ class IpController extends Controller {
     public function testAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(22090);
-        
+        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(3611);
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-        $count = count($ranges);
-        
+        $count = sizeof($ranges);
+
         for ($c = 0; $c < $count; $c++) {
             ini_set('max_execution_time', 30000000000);
             $range[] = "range" . $c;
             ${$range[$c]} = array();
         }
-       /* for ($c = 0; $c < 10; $c++) {
-            $ip_range = $ranges[$c];
-            $ip_arr = explode('/', $ip_range);
+        /* for ($c = 0; $c < 10; $c++) {
+          $ip_range = $ranges[$c];
+          $ip_arr = explode('/', $ip_range);
 
-            $bin = '';
-            for ($i = 1; $i <= 32; $i++) {
-                $bin .= $ip_arr[1] >= $i ? '1' : '0';
-            }
-            $ip_arr[1] = bindec($bin);
+          $bin = '';
+          for ($i = 1; $i <= 32; $i++) {
+          $bin .= $ip_arr[1] >= $i ? '1' : '0';
+          }
+          $ip_arr[1] = bindec($bin);
 
-            $ip = ip2long($ip_arr[0]);
-            $nm = ip2long($ip_arr[1]);
-            $nw = ($ip & $nm);
-            $bc = $nw | (~$nm);
+          $ip = ip2long($ip_arr[0]);
+          $nm = ip2long($ip_arr[1]);
+          $nw = ($ip & $nm);
+          $bc = $nw | (~$nm);
 
-            $number_of_host = ($bc - $nw - 1);
-            $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+          $number_of_host = ($bc - $nw - 1);
+          $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
 
-            for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
-                ${$range[$c]}[$zm] = long2ip($nw + $zm);
-            }
-        }
-
-
-
-        for ($x = 0; $x < 3; $x++) {
-            for ($i = 0; $i < 10; $i++) {
+          for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
+          ${$range[$c]}[$zm] = long2ip($nw + $zm);
+          }
+          }
 
 
-                $liczba_ip = count(${$range[$x]});
-                if ($liczba_ip == 0) {
-                    unset($ranges[$x]);
-                }
-                echo "x = " . $x . " zanim zacznie to mam tyle ip: " . $liczba_ip . "<br/>";
-                $losowa = rand(0, $liczba_ip);
-                $ip = ${$range[$x]}[$losowa];
-                $reversedns = gethostbyaddr($ip);
-                if ($reversedns != $ip and $reversedns != FALSE) {
-                    echo $ip . " jest serwerewm" . "<br/>";
-                }
-                echo $ip . " nie jest serwerewm" . "<br/>";
-                unset(${$range[$x]}[$losowa]);
-                echo "po zakonczeniu mam tile ip: " . count(${$range[$x]}) . "<br/>";
-            }
-        }*/
+
+          for ($x = 0; $x < 3; $x++) {
+          for ($i = 0; $i < 10; $i++) {
+
+
+          $liczba_ip = count(${$range[$x]});
+          if ($liczba_ip == 0) {
+          unset($ranges[$x]);
+          }
+          echo "x = " . $x . " zanim zacznie to mam tyle ip: " . $liczba_ip . "<br/>";
+          $losowa = rand(0, $liczba_ip);
+          $ip = ${$range[$x]}[$losowa];
+          $reversedns = gethostbyaddr($ip);
+          if ($reversedns != $ip and $reversedns != FALSE) {
+          echo $ip . " jest serwerewm" . "<br/>";
+          }
+          echo $ip . " nie jest serwerewm" . "<br/>";
+          unset(${$range[$x]}[$losowa]);
+          echo "po zakonczeniu mam tile ip: " . count(${$range[$x]}) . "<br/>";
+          }
+          } */
 
         $wielkoscProbki = 10;
         $iloscBadan = 10;
-        echo $count;
+
         for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
-            
-            $y = min($y, $count-$i1);
-            for ($i11 = 0; $i11 < $wielkoscProbki; $i11++) {
-                $badanaProbka[$i11] = rangeToArray($ranges[$i1 + $i11]);
+
+            $y = min($wielkoscProbki, $count - $i1);
+            for ($i11 = 0; $i11 < $y; $i11++) {
+                //  echo $wielkoscProbki;
+                // echo $i11;
+                $badanaProbka[$i11] = $this->rangeToArray($ranges[$i1 + $i11]);
                 $bools[$i11] = true;
             }
 
-            while (checkBools($bools)) {
+            while ($this->checkBools($bools)) {
                 for ($i2 = 0; $i2 < $wielkoscProbki; $i2++) {
                     for ($i3 = 0; $i3 < $iloscBadan || $bools[$i2]; $i3++) {
-                        $bools[$i2] = doDNSReverse($badanaProbka[$i2]);
+                        $bools[$i2] = $this->doDNSReverse($badanaProbka[$i2]);
                     }
                 }
             }
@@ -386,7 +388,7 @@ class IpController extends Controller {
     }
 
     public function checkBools($bools) {
-        foreach ($bool as $bools) {
+        foreach ($bools as $bool) {
             if ($bool)
                 return true;
         }
@@ -428,25 +430,25 @@ class IpController extends Controller {
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
         $em = $this->getDoctrine()->getManager();
-        
-        $losowa = rand(0, count($array));
+
+        $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
-                $ip_adr = new Ip();
-                $ip_adr->setIp($ip);
-                $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(22090);
-                $ip_adr->setAutonomousSytem($entity);
-                $ip_adr->setIswebserver(1);
-                $ip_adr->setLastcheck(new \DateTime('now'));
-                $em->persist($ip_adr);
-                $em->flush();
+            $ip_adr = new Ip();
+            $ip_adr->setIp($ip);
+            $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(3611);
+            $ip_adr->setAutonomousSytem($entity);
+            $ip_adr->setIswebserver(1);
+            $ip_adr->setLastcheck(new \DateTime('now'));
+            $em->persist($ip_adr);
+            $em->flush();
             echo $ip . " jest serwerem" . "<br/>";
         }
         echo $ip . " nie jest serwerewm" . "<br/>";
-        unset($array[$losowa]);//musimy zmienic na to ze usuwa i przesuwa tablice
+        unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
-        if (count($array) > 1) {
+        if (sizeof($array) > 1) {
             return true;
         }
         return false;
