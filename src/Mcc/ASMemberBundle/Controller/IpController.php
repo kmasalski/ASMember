@@ -300,14 +300,14 @@ class IpController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(22090);
-
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-        $count = sizeof($ranges);
-
+        $count = count($ranges);
+        
         for ($c = 0; $c < $count; $c++) {
             ini_set('max_execution_time', 30000000000);
             $range[] = "range" . $c;
@@ -361,7 +361,9 @@ class IpController extends Controller {
 
         $wielkoscProbki = 10;
         $iloscBadan = 10;
+        echo $count;
         for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
+            
             $y = min($y, $count-$i1);
             for ($i11 = 0; $i11 < $wielkoscProbki; $i11++) {
                 $badanaProbka[$i11] = rangeToArray($ranges[$i1 + $i11]);
@@ -409,8 +411,8 @@ class IpController extends Controller {
         $nw = ($ip & $nm);
         $bc = $nw | (~$nm);
 
-        $number_of_host = ($bc - $nw - 1);
-        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+//        $number_of_host = ($bc - $nw - 1);
+//        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
 
         for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
             $array[$zm] = long2ip($nw + $zm);
@@ -425,16 +427,26 @@ class IpController extends Controller {
          * 3. Usuwa wylosowana liczbe z array (metoda ktora znalzl konrad)
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
-        $losowa = rand(0, sizeof($array));
+        $em = $this->getDoctrine()->getManager();
+        
+        $losowa = rand(0, count($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
+                $ip_adr = new Ip();
+                $ip_adr->setIp($ip);
+                $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(22090);
+                $ip_adr->setAutonomousSytem($entity);
+                $ip_adr->setIswebserver(1);
+                $ip_adr->setLastcheck(new \DateTime('now'));
+                $em->persist($ip_adr);
+                $em->flush();
             echo $ip . " jest serwerem" . "<br/>";
         }
         echo $ip . " nie jest serwerewm" . "<br/>";
         unset($array[$losowa]);//musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
-        if (sizeof($array) > 1) {
+        if (count($array) > 1) {
             return true;
         }
         return false;
