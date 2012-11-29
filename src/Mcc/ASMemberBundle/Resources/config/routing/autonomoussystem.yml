@@ -56,4 +56,4 @@ autonomoussystem_check_all:
     
 autonomoussystem_find_representatives:
     pattern:  /{id}/findRepresentatives
-    defaults: { _controller: "MccASMemberBundle:AutonomousSystem:findRepresentatives" }      
+    defaults: { _controller: "MccASMemberBundle:Ip:findSerwers" }      

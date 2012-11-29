@@ -295,11 +295,13 @@ class IpController extends Controller {
         curl_close($ch);
         return $retcode;
     }
+    
+    var $serwersFound = 0;
 
-    public function testAction() {
+    public function findSerwersAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
+        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
@@ -313,57 +315,14 @@ class IpController extends Controller {
             $range[] = "range" . $c;
             ${$range[$c]} = array();
         }
-        /* for ($c = 0; $c < 10; $c++) {
-          $ip_range = $ranges[$c];
-          $ip_arr = explode('/', $ip_range);
-
-          $bin = '';
-          for ($i = 1; $i <= 32; $i++) {
-          $bin .= $ip_arr[1] >= $i ? '1' : '0';
-          }
-          $ip_arr[1] = bindec($bin);
-
-          $ip = ip2long($ip_arr[0]);
-          $nm = ip2long($ip_arr[1]);
-          $nw = ($ip & $nm);
-          $bc = $nw | (~$nm);
-
-          $number_of_host = ($bc - $nw - 1);
-          $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
-
-          for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
-          ${$range[$c]}[$zm] = long2ip($nw + $zm);
-          }
-          }
-
-
-
-          for ($x = 0; $x < 3; $x++) {
-          for ($i = 0; $i < 10; $i++) {
-
-
-          $liczba_ip = count(${$range[$x]});
-          if ($liczba_ip == 0) {
-          unset($ranges[$x]);
-          }
-          echo "x = " . $x . " zanim zacznie to mam tyle ip: " . $liczba_ip . "<br/>";
-          $losowa = rand(0, $liczba_ip);
-          $ip = ${$range[$x]}[$losowa];
-          $reversedns = gethostbyaddr($ip);
-          if ($reversedns != $ip and $reversedns != FALSE) {
-          echo $ip . " jest serwerewm" . "<br/>";
-          }
-          echo $ip . " nie jest serwerewm" . "<br/>";
-          unset(${$range[$x]}[$losowa]);
-          echo "po zakonczeniu mam tile ip: " . count(${$range[$x]}) . "<br/>";
-          }
-          } */
-
+  
         $wielkoscProbki = 4;
         $iloscBadan = 10;
+        $serwersToBeFound = 10;
         $testy = 0;
-        $count = 5; //DO USUNIĘCIA
-        for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
+        GLOBAL $serwersFound;
+        $serwersFound = 0;
+        for ($i1 = 0; $i1 < $count && $serwersFound < $serwersToBeFound; $i1+=$wielkoscProbki) {
 
             $wielkoscProbki = min($wielkoscProbki, $count - $i1);
             for ($i11 = 0; $i11 < $wielkoscProbki; $i11++) {
@@ -372,24 +331,19 @@ class IpController extends Controller {
                 $bools[$i11] = true;
             }
 
-            while ($this->checkBools($bools)) {
-                for ($i2 = 0; $i2 < $wielkoscProbki; $i2++) {
-                    for ($i3 = 0; $i3 < $iloscBadan || $bools[$i2]; $i3++) {
-                        $bools[$i2] = $this->doDNSReverse($badanaProbka[$i2]);
+            while ($this->checkBools($bools) && $serwersFound < $serwersToBeFound) {
+                for ($i2 = 0; $i2 < $wielkoscProbki && $serwersFound < $serwersToBeFound ; $i2++) {
+                    for ($i3 = 0; $i3 < $iloscBadan && $bools[$i2] && $serwersFound < $serwersToBeFound ; $i3++) {
+
+                        $bools[$i2] = $this->doDNSReverse($badanaProbka[$i2],$id);
                         $testy++;
-                        echo "i2 " . $i2 . "<br>";
-                        echo "i3 " . $i3 . "<br>";
-                        //$bools[$i2] = false;  TUTAJ jest blad!!! Jeżeli to 
-                        //jest zakomentowane wogole nie przechodzi do kolejnego
-                        // range. A jezeli jest otkomentowane robi ograniczona
-                        //  ilosc prob
+
                     }
                 }
             }
-            echo $testy . "<br/>";
+
         }
 
-        // }
 
         return $this->render('MccASMemberBundle:Ip:test.html.twig', array(
                 ));
@@ -421,8 +375,7 @@ class IpController extends Controller {
         $nw = ($ip & $nm);
         $bc = $nw | (~$nm);
 
-//        $number_of_host = ($bc - $nw - 1);
-//        $host_range = long2ip($nw + 1) . " -> " . long2ip($bc - 1);
+
 
         for ($zm = 1; ($nw + $zm) <= ($bc - 1); $zm++) {
             $array[$zm] = long2ip($nw + $zm);
@@ -430,32 +383,31 @@ class IpController extends Controller {
         return $array;
     }
 
-    public function doDNSReverse($array) {
+    public function doDNSReverse($array,$id) {
         /*
          * 1. Losuje liczbe z zasiegu 0-> sizeof($array)
          * 2. Bada dla wylosowanej liczby
          * 3. Usuwa wylosowana liczbe z array (metoda ktora znalzl konrad)
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
-        $em = $this->getDoctrine()->getManager();
-
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
-            echo "______________" . $ip . " Jest serwerem<br>";
-            /* $ip_adr = new Ip();
+            GLOBAL $serwersFound;
+        $em = $this->getDoctrine()->getManager();
+              $ip_adr = new Ip();
               $ip_adr->setIp($ip);
-              $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
+              $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
               $ip_adr->setAutonomousSytem($entity);
               $ip_adr->setIswebserver(1);
               $ip_adr->setLastcheck(new \DateTime('now'));
               $em->persist($ip_adr);
-              $em->flush(); */
-            // echo $ip . " jest serwerem" . "<br/>";
+              $em->flush(); 
+              $serwersFound++;
+
         }
-        echo $ip . " Nie jest serwer<br>";
-        //echo $ip . " nie jest serwerewm" . "<br/>";
+
         unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
 
