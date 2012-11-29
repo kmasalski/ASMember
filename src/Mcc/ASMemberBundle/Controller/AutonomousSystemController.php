@@ -51,25 +51,27 @@ class AutonomousSystemController extends Controller {
         }
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
-       echo strval($ranges[1]);
-        
+              
         $deleteForm = $this->createDeleteForm($id);
         //będę miał czas to przesniosę tę część do odrębnej metody -Konrad
         $qb = $em->createQueryBuilder();
         $qb->select('r')
                 ->from('Mcc\ASMemberBundle\Entity\Ip', 'r')
                 ->where('r.asidentifier = :asidentifier')
-                ->setParameter('asidentifier', $entity->getAsIdentifier());
+                ->setParameter('asidentifier', $entity->getId());
 
         $representatives = $qb->getQuery()->getResult();
         $paginator = $this->get('knp_paginator');
         $paginatedRanges = $paginator->paginate(
-                $ranges, $this->get('request')->query->get('page', 1)/* page number */, 15/* limit per page */
+                $ranges, $this->get('request')->query->get('page', 1)/* page number */, 20/* limit per page */
+        );
+        $paginatedResult = $paginator->paginate(
+                $representatives, $this->get('request')->query->get('page', 1)/* page number */, 20/* limit per page */
         );
 
         return $this->render('MccASMemberBundle:AutonomousSystem:show.html.twig', array(
                     'entity' => $entity,
-                    'representatives' => $representatives,
+                    'representatives' => $paginatedResult,
                     /* 'ranges' => $ranges, */
                     'rangeslist' => $paginatedRanges,
                     'delete_form' => $deleteForm->createView(),));

@@ -309,7 +309,7 @@ class IpController extends Controller {
 
         $ranges = $em->getRepository('MccASMemberBundle:IpRange')->findByAsid($entity);
         $count = sizeof($ranges);
-
+        GLOBAL $serwerArray;
         for ($c = 0; $c < $count; $c++) {
             ini_set('max_execution_time', 30000000000);
             $range[] = "range" . $c;
@@ -345,7 +345,11 @@ class IpController extends Controller {
         }
 
 
-        return $this->render('MccASMemberBundle:Ip:test.html.twig', array(
+        return $this->render('MccASMemberBundle:Ip:find_serwers.html.twig', array(
+            'entity' => $entity,
+            'serwerArray'=>$serwerArray,
+            'prob'=>$testy,
+            'iloscSerwerow'=>$serwersFound,
                 ));
     }
 
@@ -395,7 +399,7 @@ class IpController extends Controller {
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
             GLOBAL $serwersFound;
-        $em = $this->getDoctrine()->getManager();
+              $em = $this->getDoctrine()->getManager();
               $ip_adr = new Ip();
               $ip_adr->setIp($ip);
               $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
@@ -404,6 +408,8 @@ class IpController extends Controller {
               $ip_adr->setLastcheck(new \DateTime('now'));
               $em->persist($ip_adr);
               $em->flush(); 
+              global $serwerArray;
+              $serwerArray[$serwersFound]= $ip;
               $serwersFound++;
 
         }

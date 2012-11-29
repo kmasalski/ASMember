@@ -24,27 +24,24 @@
             Show all web servers for this AS</a>
     </li>
     <li>
-        <a href="{{ path('autonomoussystem') }}">
-            Back to the list
-        </a>
+        <a onclick="javascript:history.back()" style="text-decoration:underline; color:blue; cursor:hand">Click here to go back</a> 
     </li>
     </ul>
 {% endblock %}
 
 {% block content %}
-<h4>Representatives</h4>
-{% if representatives|length >0%}
-<p>Find other serwers <a href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start</a> </p>
+<h4>Search result</h4>
+<p>Aby znaleść {{iloscSerwerow}}, zostały wykonane {{prob}}</p>
+{% for ip in serwerArray%}
+  {{ip}}<br/>
+{% endfor %}
+{#{% if representatives|length >0%}
 <ul class="list">
 {% for representantive in representatives%}
     <li class="list.option">
         <a href="{{ path('ip_show', { 'id': representantive.id }) }}">{{representantive.getIp()}}</a>
     </li>
-    
 {% endfor %}
-        <div class="navigation">
-    {{ representatives.render()|raw }}
-      </div>
 </ul>
 {% else %}
     <p>No represantives found you can <a href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start looking for</a> them.</p>
@@ -60,7 +57,7 @@
     
     <div class="navigation">
     {{ rangeslist.render()|raw }}
-      </div>
+      </div>#}
     
     
 {% endblock %}
