@@ -299,7 +299,7 @@ class IpController extends Controller {
     public function testAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(3611);
+        $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find AutonomousSystem entity.');
@@ -361,7 +361,7 @@ class IpController extends Controller {
 
         $wielkoscProbki = 10;
         $iloscBadan = 10;
-
+        $testy=0;
         for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
 
             $y = min($wielkoscProbki, $count - $i1);
@@ -376,9 +376,11 @@ class IpController extends Controller {
                 for ($i2 = 0; $i2 < $wielkoscProbki; $i2++) {
                     for ($i3 = 0; $i3 < $iloscBadan || $bools[$i2]; $i3++) {
                         $bools[$i2] = $this->doDNSReverse($badanaProbka[$i2]);
+                        $testy++;
                     }
                 }
             }
+            echo $testy."<br/>";
         }
 
         // }
@@ -430,24 +432,25 @@ class IpController extends Controller {
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
         $em = $this->getDoctrine()->getManager();
-
+        
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
             $ip_adr = new Ip();
             $ip_adr->setIp($ip);
-            $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(3611);
+            $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
             $ip_adr->setAutonomousSytem($entity);
             $ip_adr->setIswebserver(1);
             $ip_adr->setLastcheck(new \DateTime('now'));
             $em->persist($ip_adr);
             $em->flush();
-            echo $ip . " jest serwerem" . "<br/>";
+           // echo $ip . " jest serwerem" . "<br/>";
         }
-        echo $ip . " nie jest serwerewm" . "<br/>";
+        //echo $ip . " nie jest serwerewm" . "<br/>";
         unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
+        
         if (sizeof($array) > 1) {
             return true;
         }
