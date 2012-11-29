@@ -359,15 +359,15 @@ class IpController extends Controller {
           }
           } */
 
-        $wielkoscProbki = 10;
+        $wielkoscProbki = 4;
         $iloscBadan = 10;
-        $testy=0;
+        $testy = 0;
+        $count = 5; //DO USUNIĘCIA
         for ($i1 = 0; $i1 < $count; $i1+=$wielkoscProbki) {
 
-            $y = min($wielkoscProbki, $count - $i1);
-            for ($i11 = 0; $i11 < $y; $i11++) {
-                //  echo $wielkoscProbki;
-                // echo $i11;
+            $wielkoscProbki = min($wielkoscProbki, $count - $i1);
+            for ($i11 = 0; $i11 < $wielkoscProbki; $i11++) {
+
                 $badanaProbka[$i11] = $this->rangeToArray($ranges[$i1 + $i11]);
                 $bools[$i11] = true;
             }
@@ -377,10 +377,16 @@ class IpController extends Controller {
                     for ($i3 = 0; $i3 < $iloscBadan || $bools[$i2]; $i3++) {
                         $bools[$i2] = $this->doDNSReverse($badanaProbka[$i2]);
                         $testy++;
+                        echo "i2 " . $i2 . "<br>";
+                        echo "i3 " . $i3 . "<br>";
+                        //$bools[$i2] = false;  TUTAJ jest blad!!! Jeżeli to 
+                        //jest zakomentowane wogole nie przechodzi do kolejnego
+                        // range. A jezeli jest otkomentowane robi ograniczona
+                        //  ilosc prob
                     }
                 }
             }
-            echo $testy."<br/>";
+            echo $testy . "<br/>";
         }
 
         // }
@@ -432,25 +438,27 @@ class IpController extends Controller {
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
         $em = $this->getDoctrine()->getManager();
-        
+
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
-            $ip_adr = new Ip();
-            $ip_adr->setIp($ip);
-            $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
-            $ip_adr->setAutonomousSytem($entity);
-            $ip_adr->setIswebserver(1);
-            $ip_adr->setLastcheck(new \DateTime('now'));
-            $em->persist($ip_adr);
-            $em->flush();
-           // echo $ip . " jest serwerem" . "<br/>";
+            echo "______________" . $ip . " Jest serwerem<br>";
+            /* $ip_adr = new Ip();
+              $ip_adr->setIp($ip);
+              $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find(436);
+              $ip_adr->setAutonomousSytem($entity);
+              $ip_adr->setIswebserver(1);
+              $ip_adr->setLastcheck(new \DateTime('now'));
+              $em->persist($ip_adr);
+              $em->flush(); */
+            // echo $ip . " jest serwerem" . "<br/>";
         }
+        echo $ip . " Nie jest serwer<br>";
         //echo $ip . " nie jest serwerewm" . "<br/>";
         unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
-        
+
         if (sizeof($array) > 1) {
             return true;
         }
