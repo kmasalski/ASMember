@@ -33,8 +33,24 @@
 
 {% block content %}
 <h4>Representatives</h4>
+
+
+<script type="text/javascript">
+$(function()
+    {
+        $('.warning').click(function(e)
+        {
+            alert('This action may take a while. Please patiently wait');
+        });
+    }
+);
+
+</script> 
+
+
+
 {% if representatives|length >0%}
-<p>Find other serwers <a href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start</a> </p>
+<p>Find other serwers <a class='warning' href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start</a> </p>
 <ul class="list">
 {% for representantive in representatives%}
     <li class="list.option">
@@ -47,7 +63,7 @@
       </div>
 </ul>
 {% else %}
-    <p>No represantives found you can <a href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start looking for</a> them.</p>
+    <p>No represantives found you can <a class='warning' href="{{ path('autonomoussystem_find_representatives', { 'id': entity.id }) }}">start looking for</a> them.</p>
 {% endif %}
 <h4>Ip ranges for this AS</h4>
 <ul class="list">
