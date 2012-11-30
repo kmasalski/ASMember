@@ -31,10 +31,12 @@
 
 {% block content %}
 <h4>Search result</h4>
-<p>Aby znaleść {{iloscSerwerow}}, zostały wykonane {{prob}}</p>
+<p>Aby znaleść <b>{{iloscSerwerow}}</b> serwerów, zostały wykonane <b>{{prob}}</b> prob</p>
+<ul>
 {% for ip in serwerArray%}
-  {{ip}}<br/>
+  <li>{{ip}}</li>
 {% endfor %}
+ </ul>          
 {#{% if representatives|length >0%}
 <ul class="list">
 {% for representantive in representatives%}
