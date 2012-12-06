@@ -512,7 +512,7 @@ class IpController extends Controller {
         {
             $statistics = $this->download($link);
             
-            $file = $fileRepository->getFileByAddress($link);
+            $file = $fileRepository->getByAddress($link);
             if($file == null)
             {
                 $file = new File();
