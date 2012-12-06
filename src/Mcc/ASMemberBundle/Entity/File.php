@@ -3,11 +3,13 @@
 namespace Mcc\ASMemberBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\UniqueConstraints as uniqueConstraints;
+//* @ORM\Table(name = "file", uniqueConstraints={@UniqueConstraint(name="address", columns={"address"})})
 
 /**
  * File
  *
- * @ORM\Table()
+ * @ORM\Table(name = "file")
  * @ORM\Entity
  */
 class File

@@ -24,12 +24,12 @@ class History
     /**
      * @var Ip
      *
-     * @ORM\ManyToOne(targetEntity="Ip")
+     * @ORM\ManyToOne(targetEntity="File")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fileId", referencedColumnName="id")
      * })
      */
-    private $ipid;
+    private $fileId;
 
     /**
      * @var \DateTime $whenchecked
@@ -39,11 +39,127 @@ class History
     private $whenchecked;
 
     /**
-     * @var integer $iswebserver
+     * @var integer $speedCurl
      *
-     * @ORM\Column(name="isWebServer", type="integer", nullable=false)
+     * @ORM\Column(name="speedCurl", type="integer", nullable=false)
      */
-    private $iswebserver;
+    private $speedCurl;
+
+    /**
+     * @var integer $speedObtained
+     *
+     * @ORM\Column(name="speedObtained", type="integer", nullable=false)
+     */
+    private $speedObtained;
+    
+    
+    /**
+     * @var integer $time
+     *
+     * @ORM\Column(name="time", type="integer", nullable=false)
+     */
+    private $time;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set whenchecked
+     *
+     * @param \DateTime $whenchecked
+     * @return History
+     */
+    public function setWhenchecked($whenchecked)
+    {
+        $this->whenchecked = $whenchecked;
+    
+        return $this;
+    }
+
+    /**
+     * Get whenchecked
+     *
+     * @return \DateTime 
+     */
+    public function getWhenchecked()
+    {
+        return $this->whenchecked;
+    }
+
+    /**
+     * Set speedCurl
+     *
+     * @param integer $speedCurl
+     * @return History
+     */
+    public function setSpeedCurl($speedCurl)
+    {
+        $this->speedCurl = $speedCurl;
+    
+        return $this;
+    }
+
+    /**
+     * Get speedCurl
+     *
+     * @return integer 
+     */
+    public function getSpeedCurl()
+    {
+        return $this->speedCurl;
+    }
+
+    /**
+     * Set speedObtained
+     *
+     * @param integer $speedObtained
+     * @return History
+     */
+    public function setSpeedObtained($speedObtained)
+    {
+        $this->speedObtained = $speedObtained;
+    
+        return $this;
+    }
+
+    /**
+     * Get speedObtained
+     *
+     * @return integer 
+     */
+    public function getSpeedObtained()
+    {
+        return $this->speedObtained;
+    }
+
+    /**
+     * Set fileId
+     *
+     * @param \Mcc\ASMemberBundle\Entity\File $fileId
+     * @return History
+     */
+    public function setFileId(\Mcc\ASMemberBundle\Entity\File $fileId = null)
+    {
+        $this->fileId = $fileId;
+    
+        return $this;
+    }
+
+    /**
+     * Get fileId
+     *
+     * @return \Mcc\ASMemberBundle\Entity\File 
+     */
+    public function getFileId()
+    {
+        return $this->fileId;
+    }
 }

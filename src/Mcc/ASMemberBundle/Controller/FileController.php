@@ -69,16 +69,14 @@ class FileController extends Controller
               - $info['pretransfer_time']
               - $info['starttransfer_time']
               - $info['redirect_time'];
-
-        printf("Downloaded %d bytes in %0.4f seconds.\n", $info['size_download'], $time);
-        printf("Which is %0.4f mbps\n", $info['size_download'] * 8 / $time / 1024 / 1024);
-        printf("CURL said %0.4f mbps\n", $info['speed_download'] * 8 / 1024 / 1024);
-
-        echo "\n\ncurl_getinfo() said:\n", str_repeat('-', 31 + strlen($url)), "\n";
-        foreach ($info as $label => $value)
-        {
-            printf("%-30s %s\n", $label, $value);
-        }
+        
+        $statistics['size_download'] = $info['size_download'];
+        $statistics['time'] = $time;
+        $statistics['speedCurl'] = $info['speed_download'] * 8 / 1024 / 1024;
+        $statistics['speedObtained'] = $info['size_download'] * 8 / $time / 1024 / 1024;
+        
+        unset($ch);
+        return $statistics;
     }
     
     public function downloadTestAction()
@@ -89,11 +87,34 @@ class FileController extends Controller
     public function saveFiles($links, $ip_adr)
     {
         $em = $this->getDoctrine()->getManager();
+        $fileRepository = $em->getRepository('MccASsMember:File');
         foreach ($links as $link) 
         {
             $statistics = $this->download($link);
             
+            //tworzymy lub nie obiekt file
+            
+            $file = $fileRepository->getFileByAddress($link);
+            if($file == null)
+            {
+                $file = new File();
+                $file->setAddress($link);
+                $file->setIpid($ip_adr);
+                $file->setSize($statistics['size_download']);
+                $em->persist($file);
+            }
+            
+            $history = new \Mcc\ASMemberBundle\Entity\History();
+            $history->setFileId();
+            $history->setSpeedCurl($statistics['speedCurl']);
+            $history->setSpeedObtained($statistics['speedObtained']);
+            $history->setTime($statistics['time']);
+            $history->setWhenchecked(time());
+            
+            $em->persist($history);
+            
         }
+        $em->flush();
     }
     
     
