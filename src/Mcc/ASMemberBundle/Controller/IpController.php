@@ -398,6 +398,9 @@ class IpController extends Controller {
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
+        if($reversedns != $ip && $reversedns!=FALSE)
+        {
+        
         $check = $this->do_dns($reversedns);
         echo $this->do_dns($reversedns);
         if ($check != null) {
@@ -418,7 +421,7 @@ class IpController extends Controller {
               $serwerArray[$serwersFound]= $ip;
               $serwersFound++;
 
-        }
+        }}
 
         unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
