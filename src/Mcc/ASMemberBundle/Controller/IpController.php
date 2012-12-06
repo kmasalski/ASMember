@@ -9,6 +9,7 @@ use Mcc\ASMemberBundle\Entity\IpRange;
 use Mcc\ASMemberBundle\Entity\AutonomousSystem;
 use Mcc\ASMemberBundle\Entity\Ip;
 use Mcc\ASMemberBundle\Form\IpType;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Ip controller.
@@ -422,5 +423,34 @@ class IpController extends Controller {
         }
         return false;
     }
+    
+    function search($domain)
+    {
+	$question= urlencode($domain);
+        $site = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=pdf";
 
+	$handler = curl_init();
+	curl_setopt($handler, CURLOPT_URL, $site);
+	curl_setopt($handler, CURLOPT_HEADER, 0);
+	curl_setopt($handler, CURLOPT_RETURNTRANSFER, 1);
+
+        $urlContent = curl_exec($handler);
+
+	curl_close($handler);
+        
+        $links = array();
+        $crawler = new Crawler($urlContent);
+        $crawler->filter('cite')->each(function ($node, $i) use (&$links){
+        
+            $links[$i] = $node->nodeValue;
+        });
+     
+        return $links;
+    }
+    
+    function searchTestAction()
+    {
+        
+        return new Response(var_dump($this->search("wp.pl")));       		
+    }
 }

@@ -25,3 +25,7 @@ AllIp:
 MccASMemberBundle_iprange:
     resource: "@MccASMemberBundle/Resources/config/routing/iprange.yml"
     prefix:   /iprange    
+
+mcc_file:
+    resource: "@MccASMemberBundle/Resources/config/routing/file.yml"
+    prefix:   /file

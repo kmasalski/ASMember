@@ -40,4 +40,8 @@ check_ip:
 test:
     pattern:  /test
     defaults: { _controller: "MccASMemberBundle:Ip:test" }
+    
+search:
+    pattern:  /searchTest
+    defaults: { _controller: "MccASMemberBundle:Ip:searchTest" }    
  

@@ -1,0 +1,14 @@
+file:
+    pattern:  /
+    defaults: { _controller: "MccASMemberBundle:File:index" }
+
+file_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "MccASMemberBundle:File:show" }
+    
+downloadTest:
+    pattern:  /downloadTest
+    defaults: { _controller: "MccASMemberBundle:File:downloadTest" }    
+
+
+

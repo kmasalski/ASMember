@@ -1,0 +1,29 @@
+<h1>File list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Address</th>
+            <th>Size</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('file_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.address }}</td>
+            <td>{{ entity.size }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('file_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
