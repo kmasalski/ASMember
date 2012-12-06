@@ -560,18 +560,18 @@ class IpController extends Controller {
         exec("ping -n 2 ".$domain, $output);
         if(isset($output[3])){
             echo $output[3];
-            if (strpos($output[3],'timed') == false) {
-                //echo 'wchodze true';
+            if (strpos($output[3],'timed') == false && strpos($output[3],'unreachable') == false) {
+                echo 'wchodze true';
                 return true;
             }
         }
-        //echo 'wchodze false';
+        echo 'wchodze false';
         return false;
     }
     
     public function dnsTestAction()
     {
         
-        return new Response($this->do_dns('156.17.130.98'));
+        return new Response($this->do_dns('156.17.108.87'));
     }
 }
