@@ -397,8 +397,9 @@ class IpController extends Controller {
          */
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
-        $reversedns = $this->do_revdns($ip);
-        if ($reversedns != null) {
+        $reversedns = gethostbyaddr($ip);
+        $check =  $this->do_dns($reversedns);
+        if ($check != null) {
             GLOBAL $serwersFound;
               $em = $this->getDoctrine()->getManager();
               $ip_adr = new Ip();
@@ -547,6 +548,18 @@ class IpController extends Controller {
 				//echo $domenatemp[sizeof($domenatemp)-2];//onet
                 return $domenatemp[sizeof($domenatemp)-2].".".$domenatemp[sizeof($domenatemp)-1];
 				//sizeof($links[1])
+            }
+        }
+        return null;
+    }
+    
+    function do_dns($domain) {
+        echo 'Doing DNS...'.PHP_EOL;
+        exec("ping -a -n 1 ".$domain, $output);
+        if(isset($output[1])){
+            $array = explode(" ", $output[1]);
+            if(count($array) > 6){
+                return substr($array[2], 1, strlen($array[2])-2);
             }
         }
         return null;
