@@ -398,7 +398,7 @@ class IpController extends Controller {
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
-        if($reversedns != $ip && $reversedns!=FALSE)
+        if($reversedns != $ip && $reversedns!==FALSE)
         {
         
         $check = $this->do_dns($reversedns);
@@ -559,10 +559,9 @@ class IpController extends Controller {
     
     function do_dns($domain) {
         exec("ping -a -n 1 ".$domain, $output);
-        if(isset($output[1])){
-            $array = explode(" ", $output[1]);
-            if(count($array) > 6){
-                return substr($array[2], 1, strlen($array[2])-2);
+        if(isset($output[2])){
+            if (strpos($output[2],'Request timed out') == false) {
+                return 'true';
             }
         }
         return null;
@@ -571,6 +570,6 @@ class IpController extends Controller {
     public function dnsTestAction()
     {
         
-        return new Response($this->do_dns('w4545454p.pl'));
+        return new Response($this->do_dns('wp.pl'));
     }
 }
