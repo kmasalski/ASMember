@@ -400,10 +400,10 @@ class IpController extends Controller {
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
             GLOBAL $serwersFound;
-            echo $reversedns.'<br>';
               $em = $this->getDoctrine()->getManager();
               $ip_adr = new Ip();
               $ip_adr->setIp($ip);
+              $ip_adr->setHostname($reversedns);
               $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
               $ip_adr->setAutonomousSytem($entity);
               $ip_adr->setIswebserver(1);
