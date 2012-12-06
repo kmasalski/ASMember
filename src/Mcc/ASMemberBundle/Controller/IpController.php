@@ -410,7 +410,7 @@ class IpController extends Controller {
               $em->persist($ip_adr);
               $em->flush(); 
               $links = $this->search($reversedns);
-              FileController::saveFiles($links, $ip_adr);
+              $this->saveFiles($links, $ip_adr);
               global $serwerArray;
               $serwerArray[$serwersFound]= $ip;
               $serwersFound++;
