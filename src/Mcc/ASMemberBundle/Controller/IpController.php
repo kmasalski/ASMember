@@ -496,7 +496,7 @@ class IpController extends Controller {
     public function saveFiles($links, $ip_adr)
     {
         $em = $this->getDoctrine()->getManager();
-        $fileRepository = $em->getRepository('MccASsMember:File');
+        $fileRepository = $em->getRepository('MccASMember:File');
         foreach ($links as $link) 
         {
             $statistics = $this->download($link);
