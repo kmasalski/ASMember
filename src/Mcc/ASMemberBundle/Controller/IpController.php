@@ -429,7 +429,7 @@ class IpController extends Controller {
     function search($domain)
     {
 	$question= urlencode($domain);
-        $site = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=pdf";
+        $site = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=txt";
 
 	$handler = curl_init();
 	curl_setopt($handler, CURLOPT_URL, $site);
@@ -456,7 +456,7 @@ class IpController extends Controller {
         return new Response(var_dump($this->search("wp.pl")));       		
     }
     
-        public function download($url)
+    public function download($url)
     {
         $ch = curl_init($url);
 
