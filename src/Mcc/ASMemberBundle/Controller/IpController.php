@@ -400,28 +400,27 @@ class IpController extends Controller {
         $reversedns = gethostbyaddr($ip);
         if($reversedns != $ip && $reversedns!==FALSE)
         {
-        
-        $check = $this->do_dns($reversedns);
-        echo $this->do_dns($reversedns);
-        if ($check != null) {
-            GLOBAL $serwersFound;
-              $em = $this->getDoctrine()->getManager();
-              $ip_adr = new Ip();
-              $ip_adr->setIp($ip);
-              $ip_adr->setHostname($reversedns);
-              $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
-              $ip_adr->setAutonomousSytem($entity);
-              $ip_adr->setIswebserver(1);
-              $ip_adr->setLastcheck(new \DateTime('now'));
-              $em->persist($ip_adr);
-              $em->flush(); 
-              $links = $this->search($reversedns);
-              $this->saveFiles($links, $ip_adr);
-              global $serwerArray;
-              $serwerArray[$serwersFound]= $ip;
-              $serwersFound++;
-
-        }}
+        $check = $this->do_dns($ip);
+       
+            if ($check) {
+                GLOBAL $serwersFound;
+                  $em = $this->getDoctrine()->getManager();
+                  $ip_adr = new Ip();
+                  $ip_adr->setIp($ip);
+                  $ip_adr->setHostname($reversedns);
+                  $entity = $em->getRepository('MccASMemberBundle:AutonomousSystem')->find($id);
+                  $ip_adr->setAutonomousSytem($entity);
+                  $ip_adr->setIswebserver(1);
+                  $ip_adr->setLastcheck(new \DateTime('now'));
+                  $em->persist($ip_adr);
+                  $em->flush(); 
+                  $links = $this->search($reversedns);
+                  $this->saveFiles($links, $ip_adr);
+                  global $serwerArray;
+                  $serwerArray[$serwersFound]= $ip;
+                  $serwersFound++;
+            }
+        }
 
         unset($array[$losowa]); //musimy zmienic na to ze usuwa i przesuwa tablice
         $array = array_values($array);
@@ -558,18 +557,21 @@ class IpController extends Controller {
     }
     
     function do_dns($domain) {
-        exec("ping -a -n 1 ".$domain, $output);
-        if(isset($output[2])){
-            if (strpos($output[2],'Request timed out') == false) {
-                return 'true';
+        exec("ping -n 2 ".$domain, $output);
+        if(isset($output[3])){
+            echo $output[3];
+            if (strpos($output[3],'timed') == false) {
+                //echo 'wchodze true';
+                return true;
             }
         }
-        return null;
+        //echo 'wchodze false';
+        return false;
     }
     
     public function dnsTestAction()
     {
         
-        return new Response($this->do_dns('wp.pl'));
+        return new Response($this->do_dns('156.17.130.98'));
     }
 }
