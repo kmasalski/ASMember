@@ -409,6 +409,8 @@ class IpController extends Controller {
               $ip_adr->setLastcheck(new \DateTime('now'));
               $em->persist($ip_adr);
               $em->flush(); 
+              $links = $this->search($reversedns);
+              FileController::saveFiles($links, $ip_adr);
               global $serwerArray;
               $serwerArray[$serwersFound]= $ip;
               $serwersFound++;

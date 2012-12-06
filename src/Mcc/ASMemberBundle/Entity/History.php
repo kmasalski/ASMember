@@ -24,12 +24,12 @@ class History
     /**
      * @var Ip
      *
-     * @ORM\ManyToOne(targetEntity="Ip")
+     * @ORM\ManyToOne(targetEntity="File")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ipid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fileId", referencedColumnName="id")
      * })
      */
-    private $ipid;
+    private $fileId;
 
     /**
      * @var \DateTime $whenchecked
@@ -39,90 +39,17 @@ class History
     private $whenchecked;
 
     /**
-     * @var integer $iswebserver
+     * @var integer $speedCurl
      *
-     * @ORM\Column(name="isWebServer", type="integer", nullable=false)
+     * @ORM\Column(name="speedCurl", type="integer", nullable=false)
      */
-    private $iswebserver;
-
-
+    private $speedCurl;
 
     /**
-     * Get id
+     * @var integer $speedObtained
      *
-     * @return integer 
+     * @ORM\Column(name="speedObtained", type="integer", nullable=false)
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $speedObtained;
 
-    /**
-     * Set whenchecked
-     *
-     * @param \DateTime $whenchecked
-     * @return History
-     */
-    public function setWhenchecked($whenchecked)
-    {
-        $this->whenchecked = $whenchecked;
-    
-        return $this;
-    }
-
-    /**
-     * Get whenchecked
-     *
-     * @return \DateTime 
-     */
-    public function getWhenchecked()
-    {
-        return $this->whenchecked;
-    }
-
-    /**
-     * Set iswebserver
-     *
-     * @param integer $iswebserver
-     * @return History
-     */
-    public function setIswebserver($iswebserver)
-    {
-        $this->iswebserver = $iswebserver;
-    
-        return $this;
-    }
-
-    /**
-     * Get iswebserver
-     *
-     * @return integer 
-     */
-    public function getIswebserver()
-    {
-        return $this->iswebserver;
-    }
-
-    /**
-     * Set ipid
-     *
-     * @param Mcc\ASMemberBundle\Entity\Ip $ipid
-     * @return History
-     */
-    public function setIpid(\Mcc\ASMemberBundle\Entity\Ip $ipid = null)
-    {
-        $this->ipid = $ipid;
-    
-        return $this;
-    }
-
-    /**
-     * Get ipid
-     *
-     * @return Mcc\ASMemberBundle\Entity\Ip 
-     */
-    public function getIpid()
-    {
-        return $this->ipid;
-    }
 }

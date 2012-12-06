@@ -20,7 +20,15 @@ class File
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    /**
+     * @var Ip
+     *
+     * @ORM\ManyToOne(targetEntity="Ip")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ipid", referencedColumnName="id")
+     * })
+     */
+    private $ipid;
     /**
      * @var string
      *
@@ -90,5 +98,28 @@ class File
     public function getSize()
     {
         return $this->size;
+    }
+    
+        /**
+     * Set ipid
+     *
+     * @param Mcc\ASMemberBundle\Entity\Ip $ipid
+     * @return History
+     */
+    public function setIpid(\Mcc\ASMemberBundle\Entity\Ip $ipid = null)
+    {
+        $this->ipid = $ipid;
+    
+        return $this;
+    }
+
+    /**
+     * Get ipid
+     *
+     * @return Mcc\ASMemberBundle\Entity\Ip 
+     */
+    public function getIpid()
+    {
+        return $this->ipid;
     }
 }

@@ -85,5 +85,17 @@ class FileController extends Controller
     {
         return new Response(var_dump($this->download("diety.wp.pl/regulamin_serwisu_wp.pdf")));
     }
+    
+    public function saveFiles($links, $ip_adr)
+    {
+        $em = $this->getDoctrine()->getManager();
+        foreach ($links as $link) 
+        {
+            $statistics = $this->download($link);
+            
+        }
+    }
+    
+    
 
 }
