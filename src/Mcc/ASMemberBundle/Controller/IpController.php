@@ -319,7 +319,7 @@ class IpController extends Controller {
   
         $wielkoscProbki = 4;
         $iloscBadan = 10;
-        $serwersToBeFound = 20;
+        $serwersToBeFound = 10;
         $testy = 0;
         GLOBAL $serwersFound;
         $serwersFound = 0;
