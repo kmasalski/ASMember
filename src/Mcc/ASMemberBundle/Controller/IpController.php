@@ -319,7 +319,7 @@ class IpController extends Controller {
   
         $wielkoscProbki = 4;
         $iloscBadan = 10;
-        $serwersToBeFound = 10;
+        $serwersToBeFound = 100;
         $testy = 0;
         GLOBAL $serwersFound;
         $serwersFound = 0;
@@ -497,7 +497,7 @@ class IpController extends Controller {
         $statistics['size_download'] = $info['size_download'];
         $statistics['time'] = $time;
         $statistics['speedCurl'] = $info['speed_download'] * 8 / 1024 / 1024;
-        $statistics['speedObtained'] = $info['size_download'] * 8 / $time / 1024 / 1024;
+        //$statistics['speedObtained'] = $info['size_download'] * 8 / $time / 1024 / 1024;
         
         unset($ch);
         return $statistics;
@@ -516,12 +516,12 @@ class IpController extends Controller {
         {
             $statistics = $this->download($link);
             
-            $file = $fileRepository->getByAddress($link);
+            $file = $fileRepository->findByAddress($link);
             if($file == null)
             {
-                $file = new File();
+                $file = new \Mcc\ASMemberBundle\Entity\File();
                 $file->setAddress($link);
-                $file->setIpid($ip_adr);
+                //$file->setIpid($ip_adr);
                 $file->setSize($statistics['size_download']);
                 $em->persist($file);
             }
@@ -529,9 +529,9 @@ class IpController extends Controller {
             $history = new \Mcc\ASMemberBundle\Entity\History();
             $history->setFileId();
             $history->setSpeedCurl($statistics['speedCurl']);
-            $history->setSpeedObtained($statistics['speedObtained']);
+            //$history->setSpeedObtained($statistics['speedObtained']);
             $history->setTime($statistics['time']);
-            $history->setWhenchecked(time());
+            $history->setWhenchecked(new \DateTime('now'));
             
             $em->persist($history);
             
@@ -573,5 +573,12 @@ class IpController extends Controller {
     {
         
         return new Response($this->do_dns('156.17.108.87'));
+    }
+    
+    public function savingTestAction()
+    {              $links = $this->search('rainbow.if.pwr.wroc.pl');
+
+                  $this->saveFiles($links, '$ip_adr');
+                  return new Response(var_dump($links));
     }
 }

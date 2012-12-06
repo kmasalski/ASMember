@@ -48,7 +48,7 @@ class History
     /**
      * @var integer $speedObtained
      *
-     * @ORM\Column(name="speedObtained", type="integer", nullable=false)
+     * @ORM\Column(name="speedObtained", type="integer", nullable=true)
      */
     private $speedObtained;
     

@@ -48,3 +48,7 @@ search:
 dnsTest:
     pattern:  /dnsTest
     defaults: { _controller: "MccASMemberBundle:Ip:dnsTest" }  
+
+savingTest:
+    pattern:  /savingTest
+    defaults: { _controller: "MccASMemberBundle:Ip:savingTest" }      
