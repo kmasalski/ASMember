@@ -319,7 +319,7 @@ class IpController extends Controller {
   
         $wielkoscProbki = 4;
         $iloscBadan = 10;
-        $serwersToBeFound = 10;
+        $serwersToBeFound = 20;
         $testy = 0;
         GLOBAL $serwersFound;
         $serwersFound = 0;
@@ -400,6 +400,7 @@ class IpController extends Controller {
         $reversedns = gethostbyaddr($ip);
         if ($reversedns != $ip and $reversedns != FALSE) {
             GLOBAL $serwersFound;
+            echo $reversedns.'<br>';
               $em = $this->getDoctrine()->getManager();
               $ip_adr = new Ip();
               $ip_adr->setIp($ip);
@@ -429,8 +430,18 @@ class IpController extends Controller {
     function search($domain)
     {
 	$question= urlencode($domain);
-        $site = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=txt";
-
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=pdf";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=svg";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=doc";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=xls";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=docs";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=rtf";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=txt";
+        
+        $links = array();
+        foreach ($sites as $site) {
+            
+        
 	$handler = curl_init();
 	curl_setopt($handler, CURLOPT_URL, $site);
 	curl_setopt($handler, CURLOPT_HEADER, 0);
@@ -440,12 +451,12 @@ class IpController extends Controller {
 
 	curl_close($handler);
         
-        $links = array();
         $crawler = new Crawler($urlContent);
         $crawler->filter('cite')->each(function ($node, $i) use (&$links){
         
-            $links[$i] = $node->nodeValue;
+            $links[] = $node->nodeValue;
         });
+     }
      
         return $links;
     }
