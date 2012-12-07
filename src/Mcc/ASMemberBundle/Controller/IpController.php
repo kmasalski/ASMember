@@ -501,6 +501,7 @@ class IpController extends Controller {
         //$statistics['speedObtained'] = $info['size_download'] * 8 / $time / 1024 / 1024;
         
         unset($ch);
+        var_dump($statistics);
         return $statistics;
     }
     
@@ -517,7 +518,7 @@ class IpController extends Controller {
         {
             $statistics = $this->download($link);
             
-            $file = $fileRepository->findByAddress($link);
+            $file = $fileRepository->findOneByAddress($link);
             if($file == null)
             {
                 $file = new \Mcc\ASMemberBundle\Entity\File();
@@ -528,11 +529,12 @@ class IpController extends Controller {
             }
             
             $history = new \Mcc\ASMemberBundle\Entity\History();
-            $history->setFileId();
+            $history->setFileId($file);
             $history->setSpeedCurl($statistics['speedCurl']);
             //$history->setSpeedObtained($statistics['speedObtained']);
             $history->setTime($statistics['time']);
-            $history->setWhenchecked(new \DateTime('now'));
+            $now = new \DateTime();
+            $history->setWhenchecked($now);
             
             $em->persist($history);
             
@@ -584,10 +586,9 @@ class IpController extends Controller {
         $ip_adr = $fileRepository->findOneById(1);
         
         $links = $this->search('rainbow.if.pwr.wroc.pl');
-
                  
         $this->saveFiles($links, $ip_adr);
                  
-        return new Response(var_dump($links));
+        return new Response();
     }
 }

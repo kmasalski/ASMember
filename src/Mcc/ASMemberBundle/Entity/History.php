@@ -41,22 +41,22 @@ class History
     /**
      * @var integer $speedCurl
      *
-     * @ORM\Column(name="speedCurl", type="integer", nullable=false)
+     * @ORM\Column(name="speedCurl", type="decimal", nullable=false)
      */
     private $speedCurl;
 
     /**
      * @var integer $speedObtained
      *
-     * @ORM\Column(name="speedObtained", type="integer", nullable=true)
+     * @ORM\Column(name="speedObtained", type="decimal", nullable=true)
      */
     private $speedObtained;
     
     
     /**
-     * @var integer $time
+     * @var datetime $time
      *
-     * @ORM\Column(name="time", type="integer", nullable=false)
+     * @ORM\Column(name="time", type="datetime", nullable=false)
      */
     private $time;
 
