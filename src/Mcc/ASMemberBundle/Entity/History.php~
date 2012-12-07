@@ -41,14 +41,14 @@ class History
     /**
      * @var integer $speedCurl
      *
-     * @ORM\Column(name="speedCurl", type="integer", nullable=false)
+     * @ORM\Column(name="speedCurl", type="decimal", nullable=false)
      */
     private $speedCurl;
 
     /**
      * @var integer $speedObtained
      *
-     * @ORM\Column(name="speedObtained", type="integer", nullable=false)
+     * @ORM\Column(name="speedObtained", type="decimal", nullable=true)
      */
     private $speedObtained;
     
@@ -74,7 +74,7 @@ class History
     /**
      * Set whenchecked
      *
-     * @param \DateTime $whenchecked
+     * @param DateTime $whenchecked
      * @return History
      */
     public function setWhenchecked($whenchecked)
@@ -161,5 +161,28 @@ class History
     public function getFileId()
     {
         return $this->fileId;
+    }
+
+    /**
+     * Set time
+     *
+     * @param integer $time
+     * @return History
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+    
+        return $this;
+    }
+
+    /**
+     * Get time
+     *
+     * @return integer 
+     */
+    public function getTime()
+    {
+        return $this->time;
     }
 }

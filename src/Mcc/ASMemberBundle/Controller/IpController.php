@@ -532,8 +532,10 @@ class IpController extends Controller {
             $history->setFileId($file);
             $history->setSpeedCurl($statistics['speedCurl']);
             //$history->setSpeedObtained($statistics['speedObtained']);
+            echo 'przedzapisemTimu';
             $history->setTime($statistics['time']);
-            $now = new \DateTime();
+            echo 'pozapisieTimu przed gistory';
+            $now =0;
             $history->setWhenchecked($now);
             
             $em->persist($history);
@@ -589,6 +591,6 @@ class IpController extends Controller {
                  
         $this->saveFiles($links, $ip_adr);
                  
-        return new Response();
+        return new Response("sukces");
     }
 }

@@ -54,9 +54,9 @@ class History
     
     
     /**
-     * @var datetime $time
+     * @var integer $time
      *
-     * @ORM\Column(name="time", type="datetime", nullable=false)
+     * @ORM\Column(name="time", type="integer", nullable=true)
      */
     private $time;
 
@@ -74,7 +74,7 @@ class History
     /**
      * Set whenchecked
      *
-     * @param \DateTime $whenchecked
+     * @param integer $whenchecked
      * @return History
      */
     public function setWhenchecked($whenchecked)
@@ -87,7 +87,7 @@ class History
     /**
      * Get whenchecked
      *
-     * @return \DateTime 
+     * @return integer
      */
     public function getWhenchecked()
     {
