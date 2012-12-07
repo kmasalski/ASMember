@@ -535,8 +535,8 @@ class IpController extends Controller {
             echo 'przedzapisemTimu';
             $history->setTime($statistics['time']);
             echo 'pozapisieTimu przed gistory';
-            $now =0;
-            $history->setWhenchecked($now);
+            
+            $history->setWhenchecked(new \DateTime('now'));
             
             $em->persist($history);
             

@@ -32,9 +32,9 @@ class History
     private $fileId;
 
     /**
-     * @var \DateTime $whenchecked
+     * @var DateTime $whenchecked
      *
-     * @ORM\Column(name="whenChecked", type="date", nullable=false)
+     * @ORM\Column(name="whenChecked", type="datetime", nullable=true)
      */
     private $whenchecked;
 
