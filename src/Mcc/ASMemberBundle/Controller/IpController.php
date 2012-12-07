@@ -318,8 +318,8 @@ class IpController extends Controller {
         }
   
         $wielkoscProbki = 4;
-        $iloscBadan = 10;
-        $serwersToBeFound = 100;
+        $iloscBadan = 15;
+        $serwersToBeFound = 800;
         $testy = 0;
         GLOBAL $serwersFound;
         $serwersFound = 0;
@@ -395,6 +395,7 @@ class IpController extends Controller {
          * 3. Usuwa wylosowana liczbe z array (metoda ktora znalzl konrad)
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
+        ini_set('max_execution_time', 30000000000);
         $losowa = rand(0, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
@@ -540,7 +541,7 @@ class IpController extends Controller {
     }
     
     function do_revdns($ip) {
-        echo 'Doing revDNS...'.PHP_EOL;
+        echo 'Doing revDNS...'.PHP_EOL. "<br/";
         exec("ping -a -n 1 ".$ip,$output);
         if(isset($output[1])){
             $array = explode(" ", $output[1]);
@@ -559,13 +560,13 @@ class IpController extends Controller {
     function do_dns($domain) {
         exec("ping -n 2 ".$domain, $output);
         if(isset($output[3])){
-            echo $output[3];
+            echo $output[3]. "<br/";
             if (strpos($output[3],'timed') == false && strpos($output[3],'unreachable') == false) {
-                echo 'wchodze true';
+                echo 'wchodze true'. "<br/";
                 return true;
             }
         }
-        echo 'wchodze false';
+        echo 'wchodze false'. "<br/";
         return false;
     }
     
