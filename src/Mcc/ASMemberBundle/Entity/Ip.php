@@ -53,9 +53,9 @@ class Ip
     private $iswebserver;
 
     /**
-     * @var \DateTime $lastcheck
+     * @var DateTime $lastcheck
      *
-     * @ORM\Column(name="lastCheck", type="date", nullable=true)
+     * @ORM\Column(name="lastCheck", type="datetime", nullable=true)
      */
     private $lastcheck;
 

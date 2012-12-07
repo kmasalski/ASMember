@@ -532,7 +532,7 @@ class IpController extends Controller {
             $history->setFileId($file);
             $history->setSpeedCurl($statistics['speedCurl']);
             //$history->setSpeedObtained($statistics['speedObtained']);
-            $history->setTime($statistics['time']);
+            //$history->setTime($statistics['time']);
             $now = new \DateTime();
             $history->setWhenchecked($now);
             
