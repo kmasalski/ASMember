@@ -521,7 +521,7 @@ class IpController extends Controller {
             {
                 $file = new \Mcc\ASMemberBundle\Entity\File();
                 $file->setAddress($link);
-                //$file->setIpid($ip_adr);
+                $file->setIpid($ip_adr);
                 $file->setSize($statistics['size_download']);
                 $em->persist($file);
             }
@@ -576,9 +576,17 @@ class IpController extends Controller {
     }
     
     public function savingTestAction()
-    {              $links = $this->search('rainbow.if.pwr.wroc.pl');
+    {             
+        $em = $this->getDoctrine()->getManager();
+        $fileRepository = $em->getRepository('MccASMemberBundle:Ip');
+        
+        $ip_adr = $fileRepository->findOneById(1);
+        
+        $links = $this->search('rainbow.if.pwr.wroc.pl');
 
-                  $this->saveFiles($links, '$ip_adr');
-                  return new Response(var_dump($links));
+                 
+        $this->saveFiles($links, $ip_adr);
+                 
+        return new Response(var_dump($links));
     }
 }
