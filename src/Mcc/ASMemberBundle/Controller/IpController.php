@@ -435,6 +435,8 @@ class IpController extends Controller {
     function search($domain)
     {
 	$question= urlencode($domain);
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}";
+        $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=swf";
         $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=pdf";
         $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=svg";
         $sites[] = "http://www.google.ca/search?as_sitesearch={$question}&as_filetype=doc";
