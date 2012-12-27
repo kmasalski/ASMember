@@ -46,17 +46,17 @@ class History
     private $speedCurl;
 
     /**
-     * @var integer $speedObtained
+     * @var Float $speedObtained
      *
-     * @ORM\Column(name="speedObtained", type="decimal", nullable=true)
+     * @ORM\Column(name="speedObtained", type="float", nullable=true)
      */
     private $speedObtained;
     
     
     /**
-     * @var integer $time
+     * @var Float $time
      *
-     * @ORM\Column(name="time", type="integer", nullable=true)
+     * @ORM\Column(name="time", type="float", nullable=true)
      */
     private $time;
 
@@ -97,7 +97,7 @@ class History
     /**
      * Set speedCurl
      *
-     * @param integer $speedCurl
+     * @param float $speedCurl
      * @return History
      */
     public function setSpeedCurl($speedCurl)
@@ -110,7 +110,7 @@ class History
     /**
      * Get speedCurl
      *
-     * @return integer 
+     * @return float 
      */
     public function getSpeedCurl()
     {
@@ -120,7 +120,7 @@ class History
     /**
      * Set speedObtained
      *
-     * @param integer $speedObtained
+     * @param float $speedObtained
      * @return History
      */
     public function setSpeedObtained($speedObtained)
@@ -133,7 +133,7 @@ class History
     /**
      * Get speedObtained
      *
-     * @return integer 
+     * @return float 
      */
     public function getSpeedObtained()
     {
@@ -166,7 +166,7 @@ class History
     /**
      * Set time
      *
-     * @param integer $time
+     * @param float $time
      * @return History
      */
     public function setTime($time)
@@ -179,7 +179,7 @@ class History
     /**
      * Get time
      *
-     * @return integer 
+     * @return float 
      */
     public function getTime()
     {
