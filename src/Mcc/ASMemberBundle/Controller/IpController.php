@@ -183,9 +183,9 @@ class IpController extends Controller {
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($retcode >= 100 && $retcode <= 505) {
-            echo "work " . $retcode . "<br/>";
+            //echo "work " . $retcode . "<br/>";
         } else {
-            echo "nie dziala " . $retcode . "<br/>";
+           // echo "nie dziala " . $retcode . "<br/>";
         }
     }
 
@@ -319,7 +319,7 @@ class IpController extends Controller {
   
         $wielkoscProbki = 4;
         $iloscBadan = 15;
-        $serwersToBeFound = 800;
+        $serwersToBeFound = 1000;
         $testy = 0;
         GLOBAL $serwersFound;
         $serwersFound = 0;
@@ -396,7 +396,7 @@ class IpController extends Controller {
          * 4. Jesli tablica jest pusta zwraca false, else zwraca true
          */
         ini_set('max_execution_time', 30000000000);
-        $losowa = rand(0, sizeof($array));
+        $losowa = rand(1, sizeof($array));
         $ip = $array[$losowa];
         $reversedns = gethostbyaddr($ip);
         if($reversedns != $ip && $reversedns!==FALSE)
@@ -534,9 +534,9 @@ class IpController extends Controller {
             $history->setFileId($file);
             $history->setSpeedCurl($statistics['speedCurl']);
             //$history->setSpeedObtained($statistics['speedObtained']);
-            echo 'przedzapisemTimu';
+
             $history->setTime($statistics['time']);
-            echo 'pozapisieTimu przed gistory';
+
             
             $history->setWhenchecked(new \DateTime('now'));
             
@@ -547,7 +547,7 @@ class IpController extends Controller {
     }
     
     function do_revdns($ip) {
-        echo 'Doing revDNS...'.PHP_EOL. "<br/";
+
         exec("ping -a -n 1 ".$ip,$output);
         if(isset($output[1])){
             $array = explode(" ", $output[1]);
@@ -566,13 +566,13 @@ class IpController extends Controller {
     function do_dns($domain) {
         exec("ping -n 2 ".$domain, $output);
         if(isset($output[3])){
-            echo $output[3]. "<br/";
+           // echo $output[3]. "<br/";
             if (strpos($output[3],'timed') == false && strpos($output[3],'unreachable') == false) {
-                echo 'wchodze true'. "<br/";
+
                 return true;
             }
         }
-        echo 'wchodze false'. "<br/";
+
         return false;
     }
     
