@@ -124,4 +124,41 @@ class File
     {
         return $this->ipid;
     }
+    
+    //kod własny
+    public function download()
+    {
+        $ch = curl_init($this->address);
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Sitepoint Examples (thread 581410; http://www.sitepoint.com/forums/showthread.php?t=581410)');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+
+        set_time_limit(65);
+
+        curl_exec($ch);
+        $info = curl_getinfo($ch);
+
+        // Time spent downloading, I think
+        $time = $info['total_time'];
+        
+        $statistics['size_download'] = $info['size_download'];
+        $statistics['time'] = $time;
+        $statistics['speedCurl'] = $info['speed_download'] * 8 / 1024 / 1024;
+        if($time != 0)
+        {
+            $statistics['speedObtained'] = $info['size_download'] * 8 / $time / 1024 / 1024;
+        }
+        else
+        {
+            $statistics['speedObtained'] = null;
+        }
+        
+        unset($ch);
+        //var_dump($statistics);
+        return $statistics;
+    }
+    
 }

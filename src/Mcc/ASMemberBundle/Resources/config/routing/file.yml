@@ -10,5 +10,8 @@ downloadTest:
     pattern:  /downloadTest
     defaults: { _controller: "MccASMemberBundle:File:downloadTest" }    
 
+saveFiles:
+    pattern:  /saveFilesAgain
+    defaults: { _controller: "MccASMemberBundle:File:saveFilesAgain" }  
 
 

@@ -47,4 +47,38 @@ class FileController extends Controller
         ));
     }
     
+     //tu się zaczyna kopiowanie
+//    public function download($url)
+//    {
+//
+//    }
+    
+    
+    public function saveFilesAgainAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $fileRepository = $em->getRepository('MccASMemberBundle:File');
+        
+        $files = $fileRepository->findAll();
+        foreach ($files as $file) 
+        {
+            $statistics = $file->download();
+
+            $history = new \Mcc\ASMemberBundle\Entity\History();
+            $history->setFileId($file);
+            $history->setSpeedCurl($statistics['speedCurl']);
+            if($statistics['speedObtained'] != null)
+                $history->setSpeedObtained($statistics['speedObtained']);
+            $history->setTime($statistics['time']);
+            
+            $history->setWhenchecked(new \DateTime('now'));
+            
+            $em->persist($history);
+            
+        }
+        $em->flush();
+        
+        return new Response('Sukces!');
+    }
+    
 }

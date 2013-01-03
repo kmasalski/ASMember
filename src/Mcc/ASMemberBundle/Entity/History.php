@@ -39,9 +39,9 @@ class History
     private $whenchecked;
 
     /**
-     * @var integer $speedCurl
+     * @var Float $speedCurl
      *
-     * @ORM\Column(name="speedCurl", type="decimal", nullable=false)
+     * @ORM\Column(name="speedCurl", type="float", nullable=false)
      */
     private $speedCurl;
 
